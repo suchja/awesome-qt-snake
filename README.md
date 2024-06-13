@@ -17,10 +17,10 @@ Often non-functional requirements are expressed as user stories as well. I someh
 
 So the NFRs for this simple (or maybe not that simple) project are as follows:
 
-**NFR-1 - Ease of use** - The game should be easy to use on a desktop computer. Users are familiar with the keyboard and as such this should be the major input device.
-**NFR-2 - Supported OS** - The game will be deployed to the latest versions of Windows and macOS.
-**NFR-3 - Extensibility (UI)** - Obviously the core functionality will not be extended. However, this project serves learning purposes and as such it should easily be possible to realise the UI with different technologies (e.g. Qt Widget, Qt Quick, OpenGL, ...).
-**NFR-4 - Modular Design** - Although it is, for a small project like this, oversized, a modular design should be applied. Thus it is possible to show case my experience with concepts like (e.g. MVVM/MVC, SOLID, Clean Code, ...) AND learn how they apply to C++ and Qt.
+- **NFR-1 - Ease of use** - The game should be easy to use on a desktop computer. Users are familiar with the keyboard and as such this should be the major input device.
+- **NFR-2 - Supported OS** - The game will be deployed to the latest versions of Windows and macOS.
+- **NFR-3 - Extensibility (UI)** - Obviously the core functionality will not be extended. However, this project serves learning purposes and as such it should easily be possible to realise the UI with different technologies (e.g. Qt Widget, Qt Quick, OpenGL, ...).
+- **NFR-4 - Modular Design** - Although it is, for a small project like this, oversized, a modular design should be applied. Thus it is possible to show case my experience with concepts like (e.g. MVVM/MVC, SOLID, Clean Code, ...) AND learn how they apply to C++ and Qt.
 
 ## Workflow / Development Lifecycle
 As stated in the previous section, one purpose of this project is to show case my way of tackling a development task. For this project I decided to go with some agility in mind:

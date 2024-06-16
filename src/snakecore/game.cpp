@@ -2,9 +2,12 @@
 
 #include <QDebug>
 
-Game::Game() {}
+Game::Game(int board_row_count, int board_column_count) :
+    m_board_row_count(board_row_count),
+    m_board_column_count(board_column_count)
+{}
 
-void Game::startGame()
+QRect Game::getBoardDimensions()
 {
-    qDebug() << "Game::startGame called!";
+    return QRect(0, 0, m_board_column_count, m_board_row_count);
 }

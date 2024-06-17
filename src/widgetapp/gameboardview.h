@@ -4,8 +4,6 @@
 #include <QGraphicsScene>
 #include <QObject>
 
-#include <memory>
-
 class GameViewModel;
 
 class GameBoardView : public QGraphicsScene

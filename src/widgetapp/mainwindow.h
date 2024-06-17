@@ -4,8 +4,6 @@
 #include <QMainWindow>
 #include <QtWidgets>
 
-#include <memory>
-
 class GameBoardView;
 
 QT_BEGIN_NAMESPACE

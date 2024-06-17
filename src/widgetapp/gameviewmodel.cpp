@@ -1,9 +1,9 @@
 #include "gameviewmodel.h"
 
 
-GameViewModel::GameViewModel(std::unique_ptr<Game> model, QObject *parent) :
+GameViewModel::GameViewModel(Game *model, QObject *parent) :
     QObject{parent},
-    m_game_model(std::move(model))
+    m_game_model(model)
 {}
 
 QRect GameViewModel::getBoardDimensions() const

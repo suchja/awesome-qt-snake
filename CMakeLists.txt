@@ -21,4 +21,4 @@ add_subdirectory(src/widgetapp)
 #include tests
 enable_testing()
 add_subdirectory(tests/auto/snakecore)
-
+add_subdirectory(tests/auto/widgetapp)

@@ -12,14 +12,14 @@ public:
     ~test_Game();
 
 private slots:
-    void getBoardDimensions_shouldReturnInitialValues_whenCalledAfterConstructor();
+    void getBoardDimensions_shouldReturnInitialGridCoordinates_whenCalledAfterConstructor();
 };
 
 test_Game::test_Game() {}
 
 test_Game::~test_Game() {}
 
-void test_Game::getBoardDimensions_shouldReturnInitialValues_whenCalledAfterConstructor() {
+void test_Game::getBoardDimensions_shouldReturnInitialGridCoordinates_whenCalledAfterConstructor() {
     // ARRANGE
     Game sut(20, 20);
     QRect expected(0, 0, 20, 20);

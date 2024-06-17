@@ -14,7 +14,8 @@ class GameViewModel : public QObject
 public:
     explicit GameViewModel(std::unique_ptr<Game> model, QObject *parent = nullptr);
 
-    QRect getBoardDimensions();
+    QRect getBoardDimensions() const;
+    static constexpr int getTileSize() {return m_tile_size;};
 
 signals:
 

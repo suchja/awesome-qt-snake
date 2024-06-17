@@ -11,7 +11,7 @@ class Game : public QObject
 public:
     Game(int board_row_count, int board_column_count, QObject* parent = nullptr);
 
-    QRect getBoardDimensions();
+    QRect getBoardDimensions() const;
 
 private:
     int m_board_row_count;

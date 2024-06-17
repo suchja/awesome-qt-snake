@@ -6,7 +6,7 @@ GameViewModel::GameViewModel(std::unique_ptr<Game> model, QObject *parent) :
     m_game_model(std::move(model))
 {}
 
-QRect GameViewModel::getBoardDimensions()
+QRect GameViewModel::getBoardDimensions() const
 {
     QRect internal = m_game_model->getBoardDimensions();
     return QRect(internal.left() * m_tile_size,

@@ -3,8 +3,13 @@ set(PROJECT_SOURCES
         mainwindow.h
         mainwindow.ui
 
+        #ViewModels
         gameviewmodel.h
         gameviewmodel.cpp
+
+        #Views
+        gameboardview.h
+        gameboardview.cpp
 )
 
 qt_add_library(AwesomeQtSnakeLib

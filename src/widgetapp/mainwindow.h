@@ -2,6 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtWidgets>
+
+#include <memory>
+
+class GameBoardView;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,6 +23,11 @@ public:
     ~MainWindow();
 
 private:
+    void createGame();
+
     Ui::MainWindow *ui;
+    QGraphicsView* m_graphics_view;
+
+    GameBoardView* m_view;
 };
 #endif // MAINWINDOW_H

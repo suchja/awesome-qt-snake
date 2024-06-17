@@ -21,7 +21,7 @@ test_Game::~test_Game() {}
 
 void test_Game::getBoardDimensions_shouldReturnInitialGridCoordinates_whenCalledAfterConstructor() {
     // ARRANGE
-    Game sut(20, 20);
+    Game sut(20, 20, this);
     QRect expected(0, 0, 20, 20);
 
     // ACT

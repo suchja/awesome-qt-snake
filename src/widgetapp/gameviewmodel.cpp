@@ -3,7 +3,8 @@
 
 GameViewModel::GameViewModel(Game *model, QObject *parent) :
     QObject{parent},
-    m_game_model(model)
+    m_game_model(model),
+    m_current_message(UserMessages::StartGame)
 {}
 
 QRect GameViewModel::getBoardDimensions() const
@@ -31,4 +32,9 @@ QList<QPoint> GameViewModel::getSnakePositions() const
 QPoint GameViewModel::getFoodPosition() const
 {
     return m_game_model->getFoodPosition() * m_tile_size;
+}
+
+UserMessages GameViewModel::getCurrentUserMessage() const
+{
+    return m_current_message;
 }

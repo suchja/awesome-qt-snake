@@ -15,6 +15,8 @@ public:
 private slots:
     void getBoardDimensions_shouldReturnSceneCoordinates_whenCalledAfterConstructor();
     void getSnakePositions_shouldReturnTwoSceneCoordinatesInTheCenter_whenCalledAfterConstructor();
+
+    void getCurrentUserMessage_shouldReturnStartGame_whenCalledAfterConstructor();
 };
 
 test_GameViewModel::test_GameViewModel() {}
@@ -50,6 +52,19 @@ void test_GameViewModel::getSnakePositions_shouldReturnTwoSceneCoordinatesInTheC
 
     // ASSERT
     QCOMPARE(actual, expected);
+}
+
+void test_GameViewModel::getCurrentUserMessage_shouldReturnStartGame_whenCalledAfterConstructor() {
+    // ARRANGE
+    Game game_dependency = Game(20, 20);
+
+    GameViewModel sut(&game_dependency);
+
+    // ACT
+    UserMessages actual = sut.getCurrentUserMessage();
+
+    // ASSERT
+    QCOMPARE(actual, UserMessages::StartGame);
 }
 
 QTEST_APPLESS_MAIN(test_GameViewModel)

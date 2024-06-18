@@ -5,6 +5,8 @@
 #include <QtWidgets>
 
 class GameBoardView;
+class GameViewModel;
+enum class UserMessages;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,10 +24,12 @@ public:
 
 private:
     void createGame();
+    void visualizeUserMessage(UserMessages message);
 
     Ui::MainWindow *ui;
     QGraphicsView* m_graphics_view;
 
     GameBoardView* m_view;
+    GameViewModel* m_view_model;
 };
 #endif // MAINWINDOW_H

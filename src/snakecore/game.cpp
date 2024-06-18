@@ -16,5 +16,5 @@ QRect Game::getBoardDimensions() const
 
 QPoint Game::getSnakeHeadPosition() const
 {
-    return m_snake->getHeadPosition();
+    return m_snake->getHead();
 }

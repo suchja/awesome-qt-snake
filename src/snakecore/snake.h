@@ -10,7 +10,7 @@ class Snake : public QObject
 public:
     explicit Snake(int board_row_count, int board_column_count, QObject *parent = nullptr);
 
-    QPoint getHeadPosition() const;
+    QPoint getHead() const;
 
 signals:
 
@@ -18,7 +18,7 @@ private:
     const int m_board_row_count;
     const int m_board_column_count;
 
-    QPoint m_head_position;
+    QPoint m_head;
 };
 
 #endif // SNAKE_H

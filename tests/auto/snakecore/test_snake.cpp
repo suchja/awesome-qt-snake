@@ -25,7 +25,7 @@ void test_Snake::getHeadPosition_shouldReturnCenterOfBoard_whenCalledAfterConstr
     QPoint expected(10, 10);
 
     // ACT
-    QPoint actual = sut.getHeadPosition();
+    QPoint actual = sut.getHead();
 
     // ASSERT
     QCOMPARE(actual, expected);

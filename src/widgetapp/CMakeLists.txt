@@ -1,35 +1,42 @@
 set(PROJECT_SOURCES
-        main.cpp
-
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+
+        #ViewModels
+        gameviewmodel.h
+        gameviewmodel.cpp
+
+        #Views
+        gameboardview.h
+        gameboardview.cpp
 )
+
+qt_add_library(AwesomeQtSnakeLib
+    MANUAL_FINALIZATION
+    ${PROJECT_SOURCES}
+)
+target_link_libraries(AwesomeQtSnakeLib PRIVATE
+    snakecore
+    Qt${QT_VERSION_MAJOR}::Widgets
+)
+target_include_directories(AwesomeQtSnakeLib INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(AwesomeQtSnake
         MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
+        main.cpp
     )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET AwesomeQtSnake APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 else()
-    if(ANDROID)
-        add_library(AwesomeQtSnake SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(AwesomeQtSnake
-            ${PROJECT_SOURCES}
-        )
-    endif()
+    add_executable(AwesomeQtSnake
+        main.cpp
+    )
 endif()
 
-target_link_libraries(AwesomeQtSnake PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(AwesomeQtSnake PRIVATE
+    AwesomeQtSnakeLib
+    Qt${QT_VERSION_MAJOR}::Widgets
+)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -53,5 +60,6 @@ install(TARGETS AwesomeQtSnake
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
+    qt_finalize_target(AwesomeQtSnakeLib)
     qt_finalize_executable(AwesomeQtSnake)
 endif()

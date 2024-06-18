@@ -1,6 +1,7 @@
 set(TEST_SOURCES
     test_game.cpp
     test_snake.cpp
+    test_foodgenerator.cpp
 )
 
 foreach(test_source ${TEST_SOURCES})

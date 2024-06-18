@@ -42,6 +42,8 @@ public:
     ~test_FoodGenerator();
 
 private slots:
+    void getFoodOnRandomPosition_shouldReturnPositionWithinBoardDimension_whenCalled();
+
     void getFoodOnRandomPosition_shouldReturnRandomPosition_whenCalledAfterConstructor();
     void getFoodOnRandomPosition_shouldReturnRandomPosition_whenCalledOften();
 };
@@ -49,6 +51,21 @@ private slots:
 test_FoodGenerator::test_FoodGenerator() {}
 
 test_FoodGenerator::~test_FoodGenerator() {}
+
+void test_FoodGenerator::getFoodOnRandomPosition_shouldReturnPositionWithinBoardDimension_whenCalled() {
+    // ARRANGE
+    FoodGenerator sut(20, 20);
+
+    // ACT
+    QPoint actual = sut.getFoodOnRandomPosition();
+
+    // ASSERT
+    QVERIFY2(actual.x() >= 0 && actual.x() <= 20,
+             qPrintable(QString("x-Value %1 is not within range [%2, %3]").arg(actual.x()).arg(0).arg(20)));
+
+    QVERIFY2(actual.y() >= 0 && actual.y() <= 20,
+             qPrintable(QString("y-Value %1 is not within range [%2, %3]").arg(actual.y()).arg(0).arg(20)));
+}
 
 void test_FoodGenerator::getFoodOnRandomPosition_shouldReturnRandomPosition_whenCalledAfterConstructor() {
     QSKIP("Testing output of random generator might lead to wrongly failing tests. AntiPattern", SkipAll);

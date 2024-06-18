@@ -15,6 +15,7 @@ private slots:
     void getBoardDimensions_shouldReturnInitialGridCoordinates_whenCalledAfterConstructor();
 
     void getSnakeHeadPosition_shouldReturnCenterOfBoard_whenCalledAfterConstructor();
+    void getSnakeBodyPositions_shouldReturnOneElement_whenCalledAfterConstructor();
 };
 
 test_Game::test_Game() {}
@@ -43,6 +44,17 @@ void test_Game::getSnakeHeadPosition_shouldReturnCenterOfBoard_whenCalledAfterCo
 
     // ASSERT
     QCOMPARE(actual, expected);
+}
+
+void test_Game::getSnakeBodyPositions_shouldReturnOneElement_whenCalledAfterConstructor() {
+    // ARRANGE
+    Game sut(20, 20, this);
+
+    // ACT
+    QList<QPoint> actual = sut.getSnakeBodyPositions();
+
+    // ASSERT
+    QCOMPARE(actual.count(), 1);
 }
 
 QTEST_APPLESS_MAIN(test_Game)

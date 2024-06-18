@@ -10,7 +10,7 @@ void GameBoardView::setViewModel(GameViewModel *view_model)
 {
     m_view_model = view_model;
     initialize_scene();
-    draw_snake(m_view_model->getSnakeHeadPosition());
+    draw_snake(m_view_model->getSnakePositions());
 }
 
 void GameBoardView::initialize_scene()
@@ -35,11 +35,14 @@ void GameBoardView::initialize_scene()
     setBackgroundBrush(QBrush(bg));
 }
 
-void GameBoardView::draw_snake(QPoint head_position)
+void GameBoardView::draw_snake(QList<QPoint> snake)
 {
     int tile_size = m_view_model->getTileSize();
     QPen pen(Qt::black);
     QBrush brush(Qt::green);
 
-    addRect(head_position.x(), head_position.y(), tile_size, tile_size, pen, brush);
+    foreach (const QPoint s, snake)
+    {
+        addRect(s.x(), s.y(), tile_size, tile_size, pen, brush);
+    }
 }

@@ -14,7 +14,9 @@ public:
     Game(int board_row_count, int board_column_count, QObject* parent = nullptr);
 
     QRect getBoardDimensions() const;
+
     QPoint getSnakeHeadPosition() const;
+    QList<QPoint> getSnakeBodyPositions() const;
 
 private:
     Snake* m_snake;

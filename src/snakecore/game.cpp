@@ -18,3 +18,8 @@ QPoint Game::getSnakeHeadPosition() const
 {
     return m_snake->getHead();
 }
+
+QList<QPoint> Game::getSnakeBodyPositions() const
+{
+    return m_snake->getBody();
+}

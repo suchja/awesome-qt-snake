@@ -14,3 +14,11 @@ QRect GameViewModel::getBoardDimensions() const
                  internal.width() * m_tile_size,
                  internal.height() * m_tile_size);
 }
+
+QPoint GameViewModel::getSnakeHeadPosition() const
+{
+    QPoint position = m_game_model->getSnakeHeadPosition();
+    position *= m_tile_size;
+
+    return position;
+}

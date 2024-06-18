@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QRect>
+#include <QPoint>
 
 #include "game.h"
 
@@ -12,8 +13,10 @@ class GameViewModel : public QObject
 public:
     explicit GameViewModel(Game* model, QObject *parent = nullptr);
 
-    QRect getBoardDimensions() const;
     static constexpr int getTileSize() {return m_tile_size;};
+
+    QRect getBoardDimensions() const;
+    QPoint getSnakeHeadPosition() const;
 
 signals:
 

@@ -14,6 +14,7 @@ public:
 
 private slots:
     void getBoardDimensions_shouldReturnSceneCoordinates_whenCalledAfterConstructor();
+    void getSnakeHeadPosition_shouldReturnCenterSceneCoordinates_whenCalledAfterConstructor();
 };
 
 test_GameViewModel::test_GameViewModel() {}
@@ -29,6 +30,25 @@ void test_GameViewModel::getBoardDimensions_shouldReturnSceneCoordinates_whenCal
 
     // ACT
     QRect actual = sut.getBoardDimensions();
+
+    // ASSERT
+    QCOMPARE(actual, expected);
+
+    // CLEAN UP
+    // as Game is derived from QObject, it will be automatically removed once this test is removed.
+}
+
+void test_GameViewModel::getSnakeHeadPosition_shouldReturnCenterSceneCoordinates_whenCalledAfterConstructor() {
+    // ARRANGE
+    int tile_size = GameViewModel::getTileSize();
+
+    Game* game_dependency = new Game(20, 20, this);
+    QPoint expected(200, 200);
+
+    GameViewModel sut(game_dependency);
+
+    // ACT
+    QPoint actual = sut.getSnakeHeadPosition();
 
     // ASSERT
     QCOMPARE(actual, expected);

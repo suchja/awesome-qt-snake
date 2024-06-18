@@ -15,6 +15,7 @@ public:
 
 private:
     void initialize_scene();
+    void draw_snake(QPoint head_position);
 
     GameViewModel* m_view_model;
 };

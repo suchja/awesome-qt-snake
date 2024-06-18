@@ -55,9 +55,10 @@ test_FoodGenerator::~test_FoodGenerator() {}
 void test_FoodGenerator::getFoodOnRandomPosition_shouldReturnPositionWithinBoardDimension_whenCalled() {
     // ARRANGE
     FoodGenerator sut(20, 20);
+    QList<QPoint> occupied_positions;
 
     // ACT
-    QPoint actual = sut.getFoodOnRandomPosition();
+    QPoint actual = sut.getFoodOnRandomEmptyPosition(occupied_positions);
 
     // ASSERT
     QVERIFY2(actual.x() >= 0 && actual.x() <= 20,
@@ -73,10 +74,11 @@ void test_FoodGenerator::getFoodOnRandomPosition_shouldReturnRandomPosition_when
     // ARRANGE
     FoodGenerator firstSut(20, 20);
     FoodGenerator secondSut(20, 20);
+    QList<QPoint> occupied_positions;
 
     // ACT
-    QPoint firstIteration = firstSut.getFoodOnRandomPosition();
-    QPoint secondIteration = secondSut.getFoodOnRandomPosition();
+    QPoint firstIteration = firstSut.getFoodOnRandomEmptyPosition(occupied_positions);
+    QPoint secondIteration = secondSut.getFoodOnRandomEmptyPosition(occupied_positions);
 
     // ASSERT
     QVERIFY_POINTS_NOT_EQUAL(firstIteration, secondIteration);
@@ -88,10 +90,11 @@ void test_FoodGenerator::getFoodOnRandomPosition_shouldReturnRandomPosition_when
     // ARRANGE
     FoodGenerator sut(20, 20);
     QList<QPoint> actual_positions;
+    QList<QPoint> occupied_positions;
 
     // ACT
     for (int i = 0; i < 30; ++i) {
-        actual_positions << sut.getFoodOnRandomPosition();
+        actual_positions << sut.getFoodOnRandomEmptyPosition(occupied_positions);
     }
 
     // ASSERT

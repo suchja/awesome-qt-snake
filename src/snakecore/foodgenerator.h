@@ -10,7 +10,7 @@ class FoodGenerator : public QObject
 public:
     explicit FoodGenerator(int board_row_count, int board_column_count, QObject *parent = nullptr);
 
-    QPoint getFoodOnRandomPosition() const;
+    QPoint getFoodOnRandomEmptyPosition(const QList<QPoint>& occupied_positions) const;
 
 signals:
 

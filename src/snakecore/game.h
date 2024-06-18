@@ -5,6 +5,7 @@
 #include <QRect>
 
 class Snake;
+class FoodGenerator;
 
 class Game : public QObject
 {
@@ -18,8 +19,16 @@ public:
     QPoint getSnakeHeadPosition() const;
     QList<QPoint> getSnakeBodyPositions() const;
 
+    QPoint getFoodPosition() const;
+
 private:
+    void addOccupiedPositions(QList<QPoint>& positions) const;
+
     Snake* m_snake;
+    FoodGenerator* m_food_generator;
+
+    QPoint m_food;
+
     const int m_board_row_count;
     const int m_board_column_count;
 };

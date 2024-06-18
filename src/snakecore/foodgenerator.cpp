@@ -11,10 +11,14 @@ FoodGenerator::FoodGenerator(int board_row_count, int board_column_count, QObjec
     m_random = QRandomGenerator::global();
 }
 
-QPoint FoodGenerator::getFoodOnRandomPosition() const
+QPoint FoodGenerator::getFoodOnRandomEmptyPosition(const QList<QPoint> &occupied_positions) const
 {
-    int x = m_random->bounded(m_board_row_count);
-    int y = m_random->bounded(m_board_column_count);
+    int x, y;
+    do
+    {
+        x = m_random->bounded(m_board_row_count);
+        y = m_random->bounded(m_board_column_count);
+    } while (occupied_positions.contains(QPoint(x, y)));
 
     return QPoint(x, y);
 }

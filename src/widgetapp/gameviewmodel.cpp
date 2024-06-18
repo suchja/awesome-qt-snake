@@ -27,3 +27,8 @@ QList<QPoint> GameViewModel::getSnakePositions() const
 
     return snake;
 }
+
+QPoint GameViewModel::getFoodPosition() const
+{
+    return m_game_model->getFoodPosition() * m_tile_size;
+}

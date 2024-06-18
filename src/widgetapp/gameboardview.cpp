@@ -11,6 +11,7 @@ void GameBoardView::setViewModel(GameViewModel *view_model)
     m_view_model = view_model;
     initialize_scene();
     draw_snake(m_view_model->getSnakePositions());
+    draw_food(m_view_model->getFoodPosition());
 }
 
 void GameBoardView::initialize_scene()
@@ -45,4 +46,13 @@ void GameBoardView::draw_snake(QList<QPoint> snake)
     {
         addRect(s.x(), s.y(), tile_size, tile_size, pen, brush);
     }
+}
+
+void GameBoardView::draw_food(QPoint food)
+{
+    int tile_size = m_view_model->getTileSize();
+    QPen pen(Qt::white);
+    QBrush brush(Qt::red);
+
+    addRect(food.x(), food.y(), tile_size, tile_size, pen, brush);
 }

@@ -17,6 +17,7 @@ public:
 
     QRect getBoardDimensions() const;
     QList<QPoint> getSnakePositions() const;
+    QPoint getFoodPosition() const;
 
 signals:
 

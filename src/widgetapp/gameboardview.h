@@ -16,6 +16,7 @@ public:
 private:
     void initialize_scene();
     void draw_snake(QList<QPoint> snake);
+    void draw_food(QPoint food);
 
     GameViewModel* m_view_model;
 };

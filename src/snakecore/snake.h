@@ -11,6 +11,7 @@ public:
     explicit Snake(int board_row_count, int board_column_count, QObject *parent = nullptr);
 
     QPoint getHead() const;
+    QList<QPoint> getBody() const;
 
 signals:
 
@@ -19,6 +20,7 @@ private:
     const int m_board_column_count;
 
     QPoint m_head;
+    QList<QPoint> m_body;
 };
 
 #endif // SNAKE_H

@@ -6,9 +6,16 @@ Snake::Snake(int board_row_count, int board_column_count, QObject *parent) :
     m_board_column_count(board_column_count)
 {
     m_head = QPoint(m_board_row_count/2, m_board_column_count/2);
+    QPoint body_element(m_head.x() - 1, m_head.y());
+    m_body << body_element;
 }
 
 QPoint Snake::getHead() const
 {
     return m_head;
+}
+
+QList<QPoint> Snake::getBody() const
+{
+    return m_body;
 }

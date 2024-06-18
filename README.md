@@ -32,3 +32,47 @@ As stated in the previous section, one purpose of this project is to show case m
 - Create spikes (prototypes) for learning and throw them away.
 - Use state of the art technology, but generally keep the code as simple as possible so that unexperienced developers can understand the code easily.
 - Use an incremental development approach so that a continuous evaluation is possible.
+
+## Design Decisions
+### Model-View-ViewModel (MVVM) as core pattern
+As already stated a simple example like this should be implemented in a simple way. However, I also have the requirement to show and test some of my knowledge (see **NFR-3** and **NFR-4** in [Non-Functional Requirements](#non-functional-requirements-nfr)). Therefore I decided to use the MVVM pattern to provide a general structure. I know this pattern well from .NET. It seems like it is also applied frequently in **Qt Quick**. Additionally it is geared towards an "easy" replacement of its parts. So **NFR-3 - Extensibility (UI)** should greatly benefit from this decision. Here is a first idea how it might look like:
+```mermaid
+graph TD
+
+    subgraph WidgetApp
+        subgraph View
+            MainWindow[MainWindow]
+            GameBoardView[GameBoardView]
+            MainWindow -->|contains/draws| GameBoardView
+        end
+        subgraph ViewModel
+            GameViewModel[GameViewModel]
+            MainWindow --> GameViewModel
+            GameBoardView --> GameViewModel
+        end
+    end
+
+    subgraph SnakeCore Library
+        subgraph Model
+            Game[Game]
+            Snake[Snake]
+            FoodGenerator[FoodGenerator - class]
+            Game --> Snake
+            Game --> FoodGenerator
+        end
+    end
+
+    GameViewModel --> Game
+```
+
+#### Dependency on Qt in MVVM
+From my understanding of MVVM the Model should contain all the business logic. Thus it usually has a long lifecycle and should not use technology which might change within a few years. Therefore I would argue that it shouldn't depend on Qt. Although it is porbably a company decision to depend on a framework like Qt, this might change over the years. If the core business logic is then dependend on it, it needs to be revised as well.
+Anyhow, Qt offers the signals/slots as well as the "garbage collection" and thus I decided to use Qt::Core as the basis for the `SnakeCore` library. That means all classes within the library will inherit from `QObject`. Maybe later on I can remove certain dependencies, if it shows to be obsolete.
+
+#### Injecting `ViewModel` into `View` via `setViewModel` method
+Here I'll not use any *Dependency Injection Container* or something like that. Usually I then use the constructor to inject the dependencies. However, here I'm using a dedicated method on the View to inject the dependency to the ViewModel. I would argue that it will have the following benefits:
+1. **Flexibility in Initialization**: By using a setter method (`setViewModel`), you decouple the instantiation of the `ViewModel` from the `View` itself. This separation allows you to initialize and set the `ViewModel` independently of creating the `View`.
+2. **Late Binding**: The `setViewModel` method supports late binding, meaning you can change the `ViewModel` instance associated with a `View` dynamically at runtime if required. - Although I'm not sure whether this is required here at all.
+3. **Separation of Concerns**: The constructor of `View` should ideally focus on initializing its own internal components and setting up basic functionality. Handling the `ViewModel` assignment through a setter method keeps the constructor cleaner.
+
+As I'm not that familiar with this way of injection, it is more like a try. I'll need to come back later on and see whether this really holds true and improves the overall design. Additionally this so far takes only *Qt Widget* into account. I'll see how things work in *Qt Quick*, once I've completed the widget way.

@@ -34,6 +34,16 @@ QPoint Game::getFoodPosition() const
     return m_food_generator->getFoodOnRandomEmptyPosition(occupied_positions);
 }
 
+void Game::setMoveDirection(Direction new_direction)
+{
+    m_snake->setMoveDirection(new_direction);
+}
+
+void Game::executeMove()
+{
+    m_snake->executeMove();
+}
+
 void Game::addOccupiedPositions(QList<QPoint>& positions) const
 {
     QList<QPoint> body = m_snake->getBody();

@@ -1,5 +1,5 @@
 #include "gameviewmodel.h"
-
+#include "globals.h"
 
 GameViewModel::GameViewModel(Game *model, QObject *parent) :
     QObject{parent},
@@ -44,16 +44,25 @@ bool GameViewModel::processKeyboardAction(int key_code)
     switch (key_code)
     {
     case Qt::Key_Left:
+        m_game_model->setMoveDirection(Direction::MoveLeft);
         break;
     case Qt::Key_Right:
+        m_game_model->setMoveDirection(Direction::MoveRight);
         break;
     case Qt::Key_Up:
+        m_game_model->setMoveDirection(Direction::MoveUp);
         break;
     case Qt::Key_Down:
+        m_game_model->setMoveDirection(Direction::MoveDown);
         break;
     default:
         return false;
     }
 
     return true;
+}
+
+void GameViewModel::executeMove()
+{
+    m_game_model->executeMove();
 }

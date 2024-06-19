@@ -5,6 +5,7 @@ qt_add_library(snakecore STATIC
     snake.cpp
     foodgenerator.h
     foodgenerator.cpp
+    globals.h
 )
 target_link_libraries(snakecore PRIVATE Qt6::Core)
 target_include_directories(snakecore INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})

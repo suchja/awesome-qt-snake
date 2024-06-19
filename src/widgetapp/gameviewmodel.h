@@ -27,6 +27,7 @@ public:
     UserMessages getCurrentUserMessage() const;
 
     bool processKeyboardAction(int key_code);
+    void executeMove();
 
 signals:
 

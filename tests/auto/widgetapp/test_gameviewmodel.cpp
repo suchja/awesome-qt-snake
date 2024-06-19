@@ -18,8 +18,11 @@ private slots:
 
     void getCurrentUserMessage_shouldReturnStartGame_whenCalledAfterConstructor();
 
-    void processKeyboardInput_shouldReturnFalse_whenCalledWithNonArrowKey();
-    void processKeyboardInput_shouldReturnFalse_whenCalledWithNonArrowKey_data();
+    void processKeyboardInput_shouldReturnX_whenCalledWithYKey_data();
+    void processKeyboardInput_shouldReturnX_whenCalledWithYKey();
+
+    void getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove_data();
+    void getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove();
 };
 
 test_GameViewModel::test_GameViewModel() {}
@@ -70,7 +73,7 @@ void test_GameViewModel::getCurrentUserMessage_shouldReturnStartGame_whenCalledA
     QCOMPARE(actual, UserMessages::StartGame);
 }
 
-void test_GameViewModel::processKeyboardInput_shouldReturnFalse_whenCalledWithNonArrowKey_data() {
+void test_GameViewModel::processKeyboardInput_shouldReturnX_whenCalledWithYKey_data() {
     QTest::addColumn<Qt::Key>("key_code");
     QTest::addColumn<bool>("expected_result");
 
@@ -79,9 +82,13 @@ void test_GameViewModel::processKeyboardInput_shouldReturnFalse_whenCalledWithNo
     QTest::newRow("'Esc' Key") << Qt::Key_Escape << false;
     QTest::newRow("'w' Key") << Qt::Key_W << false;
     QTest::newRow("'1' Key") << Qt::Key_1 << false;
+    QTest::newRow("'Left' Key") << Qt::Key_Left << true;
+    QTest::newRow("'Right' Key") << Qt::Key_Right << true;
+    QTest::newRow("'Up' Key") << Qt::Key_Up << true;
+    QTest::newRow("'Down' Key") << Qt::Key_Down << true;
 }
 
-void test_GameViewModel::processKeyboardInput_shouldReturnFalse_whenCalledWithNonArrowKey() {
+void test_GameViewModel::processKeyboardInput_shouldReturnX_whenCalledWithYKey() {
     // ARRANGE
     QFETCH(Qt::Key, key_code);
     QFETCH(bool, expected_result);
@@ -100,6 +107,34 @@ void test_GameViewModel::processKeyboardInput_shouldReturnFalse_whenCalledWithNo
     QCOMPARE(actual, expected_result);
 }
 
+void test_GameViewModel::getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove_data() {
+    QTest::addColumn<Qt::Key>("key_code");
+    QTest::addColumn<QList<QPoint>>("expected_positions");
+
+    QTest::newRow("Left") << Qt::Key_Left << (QList<QPoint>() << QPoint(180, 200) << QPoint(200, 200));
+    QTest::newRow("Right") << Qt::Key_Right << (QList<QPoint>() << QPoint(220, 200) << QPoint(200, 200));
+    QTest::newRow("Up") << Qt::Key_Up << (QList<QPoint>() << QPoint(200, 180) << QPoint(200, 200));
+    QTest::newRow("Down") << Qt::Key_Down << (QList<QPoint>() << QPoint(200, 220) << QPoint(200, 200));
+}
+
+void test_GameViewModel::getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove() {
+    // ARRANGE
+    QFETCH(Qt::Key, key_code);
+    QFETCH(QList<QPoint>, expected_positions);
+
+    Game game_dependency = Game(20, 20);
+
+    GameViewModel sut(&game_dependency);
+
+    // ACT
+    sut.processKeyboardAction(key_code);
+    sut.executeMove();
+    QList<QPoint> actual = sut.getSnakePositions();
+
+    // ASSERT
+    QCOMPARE(actual, expected_positions);
+
+}
 QTEST_APPLESS_MAIN(test_GameViewModel)
 
 #include "test_gameviewmodel.moc"

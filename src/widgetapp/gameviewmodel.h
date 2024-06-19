@@ -26,6 +26,8 @@ public:
 
     UserMessages getCurrentUserMessage() const;
 
+    bool processKeyboardAction(int key_code);
+
 signals:
 
 private:

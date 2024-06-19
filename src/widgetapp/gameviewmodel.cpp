@@ -38,3 +38,22 @@ UserMessages GameViewModel::getCurrentUserMessage() const
 {
     return m_current_message;
 }
+
+bool GameViewModel::processKeyboardAction(int key_code)
+{
+    switch (key_code)
+    {
+    case Qt::Key_Left:
+        break;
+    case Qt::Key_Right:
+        break;
+    case Qt::Key_Up:
+        break;
+    case Qt::Key_Down:
+        break;
+    default:
+        return false;
+    }
+
+    return true;
+}

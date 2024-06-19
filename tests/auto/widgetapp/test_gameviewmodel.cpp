@@ -17,6 +17,9 @@ private slots:
     void getSnakePositions_shouldReturnTwoSceneCoordinatesInTheCenter_whenCalledAfterConstructor();
 
     void getCurrentUserMessage_shouldReturnStartGame_whenCalledAfterConstructor();
+
+    void processKeyboardInput_shouldReturnFalse_whenCalledWithNonArrowKey();
+    void processKeyboardInput_shouldReturnFalse_whenCalledWithNonArrowKey_data();
 };
 
 test_GameViewModel::test_GameViewModel() {}
@@ -65,6 +68,36 @@ void test_GameViewModel::getCurrentUserMessage_shouldReturnStartGame_whenCalledA
 
     // ASSERT
     QCOMPARE(actual, UserMessages::StartGame);
+}
+
+void test_GameViewModel::processKeyboardInput_shouldReturnFalse_whenCalledWithNonArrowKey_data() {
+    QTest::addColumn<Qt::Key>("key_code");
+    QTest::addColumn<bool>("expected_result");
+
+    QTest::newRow("'Space' Key") << Qt::Key_Space << false;
+    QTest::newRow("'Return' Key") << Qt::Key_Return << false;
+    QTest::newRow("'Esc' Key") << Qt::Key_Escape << false;
+    QTest::newRow("'w' Key") << Qt::Key_W << false;
+    QTest::newRow("'1' Key") << Qt::Key_1 << false;
+}
+
+void test_GameViewModel::processKeyboardInput_shouldReturnFalse_whenCalledWithNonArrowKey() {
+    // ARRANGE
+    QFETCH(Qt::Key, key_code);
+    QFETCH(bool, expected_result);
+
+    Game game_dependency = Game(20, 20);
+
+    // A valid key event might look like this:
+    // QKeyEvent space_key_event(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier);
+
+    GameViewModel sut(&game_dependency);
+
+    // ACT
+    bool actual = sut.processKeyboardAction(key_code);
+
+    // ASSERT
+    QCOMPARE(actual, expected_result);
 }
 
 QTEST_APPLESS_MAIN(test_GameViewModel)

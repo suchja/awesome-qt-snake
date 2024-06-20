@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QPoint>
 
-enum class Direction;
+#include "snakecore.h"
 
 class Snake : public QObject
 {

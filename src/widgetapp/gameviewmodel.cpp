@@ -1,5 +1,5 @@
 #include "gameviewmodel.h"
-#include "globals.h"
+#include "snakecore.h"
 
 GameViewModel::GameViewModel(Game *model, QObject *parent) :
     QObject{parent},

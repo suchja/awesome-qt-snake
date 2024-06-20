@@ -1,5 +1,5 @@
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#ifndef SNAKECORE_H
+#define SNAKECORE_H
 
 enum class Direction {
     NoMove,
@@ -10,4 +10,4 @@ enum class Direction {
 };
 
 
-#endif // GLOBALS_H
+#endif // SNAKECORE_H

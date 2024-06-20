@@ -3,6 +3,27 @@ While working on this project I (re-) learned a lot about C++, Qt, TDD and more.
 
 Therefore I try to write one or the other learnings I during this project. In the future I would like to have a dedicated part of my blog, where i post these TIL. So without further ado here are my learnings!
 
+## Short-Circuit Evaluation
+C++ was designed from the beginning to support short-circuit evaluation in the logical operators `&&` (logical AND) and `||` (logical OR). That means:
+
+```cpp
+bool a = false;
+bool b = (a && someFunction());
+```
+If `a` is `false`, `someFunction()` will not be called due to short-circuit evaluation.
+
+```cpp
+bool a = true;
+bool b = (a || someFunction());
+```
+
+If `a` is `true`, `someFunction()` will not be called due to short-circuit evaluation.
+
+Especially in cases where one of the condition fails frequently or one of the conditions has a "high" cost of evaluation, the order is important!
+
+**General Rule of Thumb**
+- Place the condition that is cheaper to evaluate and/or more likely to determine the result of the logical operation first.
+
 ## I got TDD (totally?) wrong
 I would say, that I use unit tests since at least 17 years. It was one of the first larger C# projects I worked on as lead developer. In this context I learned a lot about unit testing and I also came across TDD.
 

@@ -1,4 +1,5 @@
 #include <QTest>
+#include <QSignalSpy>
 
 // add necessary includes here
 #include "game.h"
@@ -20,6 +21,7 @@ private slots:
 
     void processKeyboardInput_shouldReturnX_whenCalledWithYKey_data();
     void processKeyboardInput_shouldReturnX_whenCalledWithYKey();
+    void processKeyboardInput_shouldResultInGameStartedSignal_whenInitiallyCalledWithDirection();
 
     void getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove_data();
     void getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove();
@@ -71,6 +73,24 @@ void test_GameViewModel::getCurrentUserMessage_shouldReturnStartGame_whenCalledA
 
     // ASSERT
     QCOMPARE(actual, UserMessages::StartGame);
+}
+
+void test_GameViewModel::processKeyboardInput_shouldResultInGameStartedSignal_whenInitiallyCalledWithDirection() {
+    // ARRANGE
+    Game game_dependency = Game(20, 20);
+
+    GameViewModel sut(&game_dependency);
+
+    QSignalSpy is_started_signal(&sut, SIGNAL(gameStarted()));
+
+    // TODO: JS, why is this not working???
+    //QSignalSpy is_started_signal(&sut, &GameViewModel::gameStarted);
+
+    // ACT
+    sut.processKeyboardAction(Qt::Key_Right);
+
+    // ASSERT
+    QCOMPARE(is_started_signal.count(), 1);
 }
 
 void test_GameViewModel::processKeyboardInput_shouldReturnX_whenCalledWithYKey_data() {

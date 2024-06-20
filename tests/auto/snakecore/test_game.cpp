@@ -1,8 +1,6 @@
 #include <QTest>
 #include <QSignalSpy>
 
-#include "snakecore.h"
-
 #define QVERIFY_LIST_NOT_INCLUDES_POINT(list, point) \
 do { \
     for (int i = 0; i < (list).size(); ++i) { \
@@ -17,6 +15,7 @@ do { \
 } while (0)
 
 // add necessary includes here
+#include "snakecore.h"
 #include "game.h"
 
 class test_Game : public QObject

@@ -26,6 +26,9 @@ public:
 protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 
+private slots:
+    void startGame();
+
 private:
     void createGame();
     void visualizeUserMessage(UserMessages message);

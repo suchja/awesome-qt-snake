@@ -7,7 +7,6 @@ foreach(test_source ${TEST_SOURCES})
     add_executable(${test_name} ${test_source})
     target_link_libraries(${test_name}
         Qt6::Test
-        Qt6::Widgets
         snakecore
         AwesomeQtSnakeLib
     )

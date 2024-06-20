@@ -1,11 +1,14 @@
 #include "gameviewmodel.h"
 #include "snakecore.h"
+#include "game.h"
 
 GameViewModel::GameViewModel(Game *model, QObject *parent) :
     QObject{parent},
     m_game_model(model),
     m_current_message(UserMessages::StartGame)
-{}
+{
+    connect(m_game_model, SIGNAL(isStarted()), this, SLOT(startGame()));
+}
 
 QRect GameViewModel::getBoardDimensions() const
 {
@@ -37,6 +40,11 @@ QPoint GameViewModel::getFoodPosition() const
 UserMessages GameViewModel::getCurrentUserMessage() const
 {
     return m_current_message;
+}
+
+void GameViewModel::startGame()
+{
+    emit gameStarted();
 }
 
 bool GameViewModel::processKeyboardAction(int key_code)

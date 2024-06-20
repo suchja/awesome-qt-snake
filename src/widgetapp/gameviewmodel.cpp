@@ -73,4 +73,5 @@ bool GameViewModel::processKeyboardAction(int key_code)
 void GameViewModel::executeMove()
 {
     m_game_model->executeMove();
+    emit gameUpdated();
 }

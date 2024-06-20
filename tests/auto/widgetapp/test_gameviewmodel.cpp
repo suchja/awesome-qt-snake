@@ -25,6 +25,8 @@ private slots:
 
     void getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove_data();
     void getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove();
+
+    void executeMove_shouldSignalGameUpdated_whenItIsCalled();
 };
 
 test_GameViewModel::test_GameViewModel() {}
@@ -153,8 +155,25 @@ void test_GameViewModel::getSnakePostions_shouldBeChangedToNewPosition_whenCalle
 
     // ASSERT
     QCOMPARE(actual, expected_positions);
+}
+
+void test_GameViewModel::executeMove_shouldSignalGameUpdated_whenItIsCalled()
+{
+    // ARRANGE
+    Game game_dependency = Game(20, 20);
+
+    GameViewModel sut(&game_dependency);
+
+    QSignalSpy is_updated_signal(&sut, SIGNAL(gameUpdated()));
+
+    // ACT
+    sut.executeMove();
+
+    // ASSERT
+    QCOMPARE(is_updated_signal.count(), 1);
 
 }
+
 QTEST_APPLESS_MAIN(test_GameViewModel)
 
 #include "test_gameviewmodel.moc"

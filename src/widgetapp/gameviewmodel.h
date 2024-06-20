@@ -37,6 +37,7 @@ private slots:
 
 signals:
     void gameStarted();
+    void gameUpdated();
 
 private:
 

@@ -1,4 +1,6 @@
 #include <QTest>
+#include <QSignalSpy>
+
 #include "globals.h"
 
 #define QVERIFY_LIST_NOT_INCLUDES_POINT(list, point) \
@@ -32,6 +34,8 @@ private slots:
     void getSnakeBodyPositions_shouldReturnOneElement_whenCalledAfterConstructor();
 
     void getFoodPosition_shouldReturnPositionNotColidingWithSnake_whenCalled();
+
+    void isStarted_shouldBeEmitted_whenMoveDirectionIsSetFromNoMoveToSomethingElse();
 
     void getSnakeHeadPosition_shouldMoveOneTiletoNewDirection_whenCalledAfterSettingDirectionAndExecutingMove_data();
     void getSnakeHeadPosition_shouldMoveOneTiletoNewDirection_whenCalledAfterSettingDirectionAndExecutingMove();
@@ -88,6 +92,20 @@ void test_Game::getFoodPosition_shouldReturnPositionNotColidingWithSnake_whenCal
     snake << sut.getSnakeHeadPosition();
 
     QVERIFY_LIST_NOT_INCLUDES_POINT(snake, actual);
+}
+
+void test_Game::isStarted_shouldBeEmitted_whenMoveDirectionIsSetFromNoMoveToSomethingElse()
+{
+    // ARRANGE
+    Game sut(20, 20);
+
+    QSignalSpy is_started_signal(&sut, &Game::isStarted);
+
+    // ACT
+    sut.setMoveDirection(Direction::MoveLeft);
+
+    // ASSERT
+    QCOMPARE(is_started_signal.count(), 1);
 }
 
 void test_Game::getSnakeHeadPosition_shouldMoveOneTiletoNewDirection_whenCalledAfterSettingDirectionAndExecutingMove_data()

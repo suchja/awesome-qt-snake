@@ -25,6 +25,9 @@ public:
     void setMoveDirection(Direction new_direction);
     void executeMove();
 
+signals:
+    void isStarted();
+
 private:
     void addOccupiedPositions(QList<QPoint>& positions) const;
 

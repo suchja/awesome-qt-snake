@@ -36,6 +36,11 @@ QPoint Game::getFoodPosition() const
 
 void Game::setMoveDirection(Direction new_direction)
 {
+    if (!m_snake->isMoving())
+    {
+        emit isStarted();
+    }
+
     m_snake->setMoveDirection(new_direction);
 }
 

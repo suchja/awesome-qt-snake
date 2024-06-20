@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtWidgets>
+#include <QTimer>
 
 class GameBoardView;
 class GameViewModel;
@@ -34,5 +35,6 @@ private:
 
     GameBoardView* m_view;
     GameViewModel* m_view_model;
+    QTimer m_timer;
 };
 #endif // MAINWINDOW_H

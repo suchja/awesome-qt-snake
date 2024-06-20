@@ -22,6 +22,11 @@ QList<QPoint> Snake::getBody() const
     return m_body;
 }
 
+bool Snake::isMoving() const
+{
+    return m_move_direction != Direction::NoMove;
+}
+
 void Snake::setMoveDirection(Direction new_direction)
 {
     m_move_direction = new_direction;

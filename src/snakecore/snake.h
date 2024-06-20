@@ -14,6 +14,7 @@ public:
 
     QPoint getHead() const;
     QList<QPoint> getBody() const;
+    bool isMoving() const;
 
     void setMoveDirection(Direction new_direction);
     void executeMove();

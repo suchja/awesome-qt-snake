@@ -52,16 +52,19 @@ void test_GameViewModel::getSnakePositions_shouldReturnTwoSceneCoordinatesInTheC
     int tile_size = GameViewModel::getTileSize();
 
     Game game_dependency = Game(20, 20);
-    QList<QPoint> expected;
-    expected << QPoint(200, 200) << QPoint(180, 200);
+    QPoint expected_head = QPoint(200, 200);
+    QList<QPoint> expected_body;
+    expected_body << QPoint(180, 200);
 
     GameViewModel sut(&game_dependency);
 
     // ACT
-    QList<QPoint> actual = sut.getSnakePositions();
+    QPoint actual_head = sut.getSnakeHeadPosition();
+    QList<QPoint> actual_body = sut.getSnakeBodyPositions();
 
     // ASSERT
-    QCOMPARE(actual, expected);
+    QCOMPARE(actual_head, expected_head);
+    QCOMPARE(actual_body, expected_body);
 }
 
 void test_GameViewModel::getCurrentUserMessage_shouldReturnStartGame_whenCalledAfterConstructor() {
@@ -131,18 +134,20 @@ void test_GameViewModel::processKeyboardInput_shouldReturnX_whenCalledWithYKey()
 
 void test_GameViewModel::getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove_data() {
     QTest::addColumn<Qt::Key>("key_code");
-    QTest::addColumn<QList<QPoint>>("expected_positions");
+    QTest::addColumn<QPoint>("expected_head");
+    QTest::addColumn<QList<QPoint>>("expected_body");
 
-    QTest::newRow("Left") << Qt::Key_Left << (QList<QPoint>() << QPoint(180, 200) << QPoint(200, 200));
-    QTest::newRow("Right") << Qt::Key_Right << (QList<QPoint>() << QPoint(220, 200) << QPoint(200, 200));
-    QTest::newRow("Up") << Qt::Key_Up << (QList<QPoint>() << QPoint(200, 180) << QPoint(200, 200));
-    QTest::newRow("Down") << Qt::Key_Down << (QList<QPoint>() << QPoint(200, 220) << QPoint(200, 200));
+    QTest::newRow("Left") << Qt::Key_Left << QPoint(180, 200) << (QList<QPoint>() << QPoint(200, 200));
+    QTest::newRow("Right") << Qt::Key_Right << QPoint(220, 200) << (QList<QPoint>() << QPoint(200, 200));
+    QTest::newRow("Up") << Qt::Key_Up << QPoint(200, 180) << (QList<QPoint>() << QPoint(200, 200));
+    QTest::newRow("Down") << Qt::Key_Down << QPoint(200, 220) << (QList<QPoint>() << QPoint(200, 200));
 }
 
 void test_GameViewModel::getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove() {
     // ARRANGE
     QFETCH(Qt::Key, key_code);
-    QFETCH(QList<QPoint>, expected_positions);
+    QFETCH(QPoint, expected_head);
+    QFETCH(QList<QPoint>, expected_body);
 
     Game game_dependency = Game(20, 20);
 
@@ -151,10 +156,12 @@ void test_GameViewModel::getSnakePostions_shouldBeChangedToNewPosition_whenCalle
     // ACT
     sut.processKeyboardAction(key_code);
     sut.executeMove();
-    QList<QPoint> actual = sut.getSnakePositions();
+    QPoint actual_head = sut.getSnakeHeadPosition();
+    QList<QPoint> actual_body = sut.getSnakeBodyPositions();
 
     // ASSERT
-    QCOMPARE(actual, expected_positions);
+    QCOMPARE(actual_head, expected_head);
+    QCOMPARE(actual_body, expected_body);
 }
 
 void test_GameViewModel::executeMove_shouldSignalGameUpdated_whenItIsCalled()

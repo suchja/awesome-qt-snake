@@ -19,17 +19,21 @@ QRect GameViewModel::getBoardDimensions() const
                  internal.height() * m_tile_size);
 }
 
-QList<QPoint> GameViewModel::getSnakePositions() const
+QPoint GameViewModel::getSnakeHeadPosition() const
 {
     QPoint head = m_game_model->getSnakeHeadPosition();
-    QList<QPoint> snake = m_game_model->getSnakeBodyPositions();
-    snake.push_front(head);
+    return head * m_tile_size;
+}
 
-    for (QPoint &s : snake) {
+QList<QPoint> GameViewModel::getSnakeBodyPositions() const
+{
+    QList<QPoint> body = m_game_model->getSnakeBodyPositions();
+
+    for (QPoint &s : body) {
         s *= m_tile_size;
     }
 
-    return snake;
+    return body;
 }
 
 QPoint GameViewModel::getFoodPosition() const

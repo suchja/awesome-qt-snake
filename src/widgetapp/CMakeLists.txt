@@ -10,6 +10,8 @@ set(PROJECT_SOURCES
         #Views
         gameboardview.h
         gameboardview.cpp
+        snakeview.h
+        snakeview.cpp
 )
 
 qt_add_library(AwesomeQtSnakeLib

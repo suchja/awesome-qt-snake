@@ -22,7 +22,8 @@ public:
     static constexpr int getTileSize() {return m_tile_size;}
 
     QRect getBoardDimensions() const;
-    QList<QPoint> getSnakePositions() const;
+    QPoint getSnakeHeadPosition() const;
+    QList<QPoint> getSnakeBodyPositions() const;
     QPoint getFoodPosition() const;
 
     UserMessages getCurrentUserMessage() const;

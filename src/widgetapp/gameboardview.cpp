@@ -1,6 +1,7 @@
 #include "gameboardview.h"
 
 #include "gameviewmodel.h"
+#include "snakeview.h"
 
 #include <QPainter>
 
@@ -10,8 +11,9 @@ void GameBoardView::setViewModel(GameViewModel *view_model)
 {
     m_view_model = view_model;
     initialize_scene();
-    draw_snake(m_view_model->getSnakePositions());
+    add_snake(m_view_model->getSnakeHeadPosition(), m_view_model->getSnakeBodyPositions());
     draw_food(m_view_model->getFoodPosition());
+    connect(m_view_model, &GameViewModel::gameUpdated, this, &GameBoardView::updateSnake);
 }
 
 void GameBoardView::initialize_scene()
@@ -36,16 +38,15 @@ void GameBoardView::initialize_scene()
     setBackgroundBrush(QBrush(bg));
 }
 
-void GameBoardView::draw_snake(QList<QPoint> snake)
+void GameBoardView::add_snake(QPoint head, QList<QPoint> body)
 {
     int tile_size = m_view_model->getTileSize();
     QPen pen(Qt::black);
     QBrush brush(Qt::green);
 
-    foreach (const QPoint s, snake)
-    {
-        addRect(s.x(), s.y(), tile_size, tile_size, pen, brush);
-    }
+    m_snake = new SnakeView(tile_size, pen, brush, this);
+    m_snake->updateToPosition(head, body);
+    this->addItem(m_snake);
 }
 
 void GameBoardView::draw_food(QPoint food)
@@ -55,4 +56,11 @@ void GameBoardView::draw_food(QPoint food)
     QBrush brush(Qt::red);
 
     addRect(food.x(), food.y(), tile_size, tile_size, pen, brush);
+}
+
+void GameBoardView::updateSnake()
+{
+    m_snake->updateToPosition(m_view_model->getSnakeHeadPosition(),
+                              m_view_model->getSnakeBodyPositions()
+                              );
 }

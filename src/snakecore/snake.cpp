@@ -39,19 +39,27 @@ void Snake::executeMove()
 
     if (m_move_direction == Direction::MoveRight)
     {
-        m_head = QPoint(m_head.x() + 1, m_head.y());
+        m_head.rx() += 1;
+        if (m_head.x() >= m_board_column_count)
+            m_head.rx() = 0;
     }
     else if (m_move_direction == Direction::MoveLeft)
     {
-        m_head = QPoint(m_head.x() - 1, m_head.y());
+        m_head.rx() -= 1;
+        if (m_head.x() <= 0)
+            m_head.rx() = m_board_column_count - 1;
     }
     else if (m_move_direction == Direction::MoveDown)
     {
-        m_head = QPoint(m_head.x(), m_head.y() + 1);
+        m_head.ry() += 1;
+        if (m_head.y() >= m_board_row_count)
+            m_head.ry() = 0;
     }
     else if (m_move_direction == Direction::MoveUp)
     {
-        m_head = QPoint(m_head.x(), m_head.y() - 1);
+        m_head.ry() -= 1;
+        if (m_head.y() <= 0)
+            m_head.ry() = m_board_row_count - 1;
     }
 }
 

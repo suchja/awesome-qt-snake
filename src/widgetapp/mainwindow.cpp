@@ -27,6 +27,7 @@ void MainWindow::startGame()
 {
     connect(&m_timer, SIGNAL(timeout()), m_view_model, SLOT(executeMove()));
     m_timer.start(250);
+    visualizeUserMessage(m_view_model->getCurrentUserMessage());
 }
 
 MainWindow::~MainWindow()

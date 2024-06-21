@@ -5,6 +5,7 @@
 #include <QObject>
 
 class GameViewModel;
+class SnakeView;
 
 class GameBoardView : public QGraphicsScene
 {
@@ -15,10 +16,13 @@ public:
 
 private:
     void initialize_scene();
-    void draw_snake(QList<QPoint> snake);
+    void add_snake(QPoint head, QList<QPoint> body);
     void draw_food(QPoint food);
 
+    void updateSnake();
+
     GameViewModel* m_view_model;
+    SnakeView* m_snake;
 };
 
 #endif // GAMEBOARDVIEW_H

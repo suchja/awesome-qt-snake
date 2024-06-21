@@ -6,6 +6,7 @@
 
 class Snake;
 class FoodGenerator;
+enum class Direction;
 
 class Game : public QObject
 {
@@ -21,12 +22,17 @@ public:
 
     QPoint getFoodPosition() const;
 
+    void setMoveDirection(Direction new_direction);
+    void executeMove();
+
+signals:
+    void isStarted();
+
 private:
     void addOccupiedPositions(QList<QPoint>& positions) const;
 
     Snake* m_snake;
     FoodGenerator* m_food_generator;
-
     QPoint m_food;
 
     const int m_board_row_count;

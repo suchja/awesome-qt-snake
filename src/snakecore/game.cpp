@@ -1,6 +1,7 @@
 #include "game.h"
 #include "snake.h"
 #include "foodgenerator.h"
+#include "snakecore.h"
 
 Game::Game(int board_row_count, int board_column_count, QObject *parent) :
     QObject{parent},
@@ -32,6 +33,21 @@ QPoint Game::getFoodPosition() const
     addOccupiedPositions(occupied_positions);
 
     return m_food_generator->getFoodOnRandomEmptyPosition(occupied_positions);
+}
+
+void Game::setMoveDirection(Direction new_direction)
+{
+    if (!m_snake->isMoving() && (new_direction != Direction::NoMove))
+    {
+        emit isStarted();
+    }
+
+    m_snake->setMoveDirection(new_direction);
+}
+
+void Game::executeMove()
+{
+    m_snake->executeMove();
 }
 
 void Game::addOccupiedPositions(QList<QPoint>& positions) const

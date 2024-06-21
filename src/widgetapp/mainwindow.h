@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtWidgets>
+#include <QTimer>
 
 class GameBoardView;
 class GameViewModel;
@@ -22,6 +23,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *event) override;
+
+private slots:
+    void startGame();
+
 private:
     void createGame();
     void visualizeUserMessage(UserMessages message);
@@ -31,5 +38,6 @@ private:
 
     GameBoardView* m_view;
     GameViewModel* m_view_model;
+    QTimer m_timer;
 };
 #endif // MAINWINDOW_H

@@ -46,7 +46,7 @@ void Snake::executeMove()
     else if (m_move_direction == Direction::MoveLeft)
     {
         m_head.rx() -= 1;
-        if (m_head.x() <= 0)
+        if (m_head.x() < 0)
             m_head.rx() = m_board_column_count - 1;
     }
     else if (m_move_direction == Direction::MoveDown)
@@ -58,7 +58,7 @@ void Snake::executeMove()
     else if (m_move_direction == Direction::MoveUp)
     {
         m_head.ry() -= 1;
-        if (m_head.y() <= 0)
+        if (m_head.y() < 0)
             m_head.ry() = m_board_row_count - 1;
     }
 }

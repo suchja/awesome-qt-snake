@@ -22,6 +22,8 @@ private slots:
 
     void getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data();
     void getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder();
+    void getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data();
+    void getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder();
 };
 
 test_Snake::test_Snake() {}
@@ -108,18 +110,20 @@ void test_Snake::getBody_shouldReturnNewPosition_whenCalledAfter_setToHeadPositi
 void test_Snake::getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data() {
     QTest::addColumn<QPoint>("start_head_position");
     QTest::addColumn<Direction>("move_direction");
+    QTest::addColumn<int>("move_count");
     QTest::addColumn<QPoint>("expected_position");
 
-    QTest::newRow("right border") << QPoint(19, 10) << Direction::MoveRight << QPoint(0, 10);
-    QTest::newRow("left border") << QPoint(0, 10) << Direction::MoveLeft << QPoint(19, 10);
-    QTest::newRow("bottom border") << QPoint(19, 19) << Direction::MoveDown << QPoint(19, 0);
-    QTest::newRow("upper border") << QPoint(2, 0) << Direction::MoveUp << QPoint(2, 19);
+    QTest::newRow("right border") << QPoint(18, 10) << Direction::MoveRight << 2 << QPoint(0, 10);
+    QTest::newRow("left border") << QPoint(1, 10) << Direction::MoveLeft << 2 << QPoint(19, 10);
+    QTest::newRow("bottom border") << QPoint(19, 18) << Direction::MoveDown << 2 << QPoint(19, 0);
+    QTest::newRow("upper border") << QPoint(2, 1) << Direction::MoveUp << 2 << QPoint(2, 19);
 }
 
 void test_Snake::getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder() {
     // ARRANGE
     QFETCH(QPoint, start_head_position);
     QFETCH(Direction, move_direction);
+    QFETCH(int, move_count);
     QFETCH(QPoint, expected_position);
 
     Snake sut(20, 20, this);
@@ -128,12 +132,44 @@ void test_Snake::getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder
     sut.setMoveDirection(move_direction);
 
     // ACT
-    sut.executeMove();
+    for (int i = 0; i < move_count; ++i)
+        sut.executeMove();
+
     QPoint actual = sut.getHead();
 
     // ASSERT
     QCOMPARE(actual, expected_position);
+}
 
+void test_Snake::getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data() {
+    QTest::addColumn<QPoint>("start_head_position");
+    QTest::addColumn<Direction>("move_direction");
+    QTest::addColumn<QList<QPoint>>("expected_positions");
+
+    QTest::newRow("right border") << QPoint(19, 10) << Direction::MoveRight << (QList<QPoint>() << QPoint(0, 10));
+    QTest::newRow("left border") << QPoint(0, 10) << Direction::MoveLeft << (QList<QPoint>() << QPoint(19, 10));
+    QTest::newRow("bottom border") << QPoint(19, 19) << Direction::MoveDown << (QList<QPoint>() << QPoint(19, 0));
+    QTest::newRow("upper border") << QPoint(2, 0) << Direction::MoveUp << (QList<QPoint>() << QPoint(2, 19));
+}
+
+void test_Snake::getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder() {
+    // ARRANGE
+    QFETCH(QPoint, start_head_position);
+    QFETCH(Direction, move_direction);
+    QFETCH(QList<QPoint>, expected_positions);
+
+    Snake sut(20, 20, this);
+
+    sut.setToHeadPosition(start_head_position);
+    sut.setMoveDirection(move_direction);
+
+    // ACT
+    sut.executeMove();
+    sut.executeMove(); // body "flips" to other side after head!
+    QList<QPoint> actual = sut.getBody();
+
+    // ASSERT
+    QCOMPARE(actual, expected_positions);
 }
 
 QTEST_APPLESS_MAIN(test_Snake)

@@ -19,6 +19,8 @@ public:
     void setMoveDirection(Direction new_direction);
     void executeMove();
 
+    void setToHeadPosition(QPoint new_head_position);
+
 signals:
 
 private:

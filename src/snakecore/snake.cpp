@@ -62,14 +62,3 @@ void Snake::executeMove()
             m_head.ry() = m_board_row_count - 1;
     }
 }
-
-void Snake::setToHeadPosition(QPoint new_head_position)
-{
-    QPoint offset = new_head_position - m_head;
-
-    m_head = new_head_position;
-
-    for (QPoint &point : m_body) {
-        point += offset;
-    }
-}

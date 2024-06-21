@@ -18,6 +18,7 @@ private slots:
     void getSnakePositions_shouldReturnTwoSceneCoordinatesInTheCenter_whenCalledAfterConstructor();
 
     void getCurrentUserMessage_shouldReturnStartGame_whenCalledAfterConstructor();
+    void getCurrentUserMessage_shouldReturnNone_whenGameIsStarted();
 
     void processKeyboardInput_shouldReturnX_whenCalledWithYKey_data();
     void processKeyboardInput_shouldReturnX_whenCalledWithYKey();
@@ -78,6 +79,20 @@ void test_GameViewModel::getCurrentUserMessage_shouldReturnStartGame_whenCalledA
 
     // ASSERT
     QCOMPARE(actual, UserMessages::StartGame);
+}
+
+void test_GameViewModel::getCurrentUserMessage_shouldReturnNone_whenGameIsStarted() {
+    // ARRANGE
+    Game game_dependency = Game(20, 20);
+
+    GameViewModel sut(&game_dependency);
+
+    // ACT
+    sut.processKeyboardAction(Qt::Key_Down); // game starts with arrow key press!
+    UserMessages actual = sut.getCurrentUserMessage();
+
+    // ASSERT
+    QCOMPARE(actual, UserMessages::None);
 }
 
 void test_GameViewModel::processKeyboardInput_shouldResultInGameStartedSignal_whenInitiallyCalledWithDirection() {

@@ -48,6 +48,7 @@ UserMessages GameViewModel::getCurrentUserMessage() const
 
 void GameViewModel::startGame()
 {
+    m_current_message = UserMessages::None;
     emit gameStarted();
 }
 

@@ -43,6 +43,8 @@ signals:
     void userMessageUpdated(UserMessages message);
 
 private:
+    void updateUserMessage(UserMessages new_message);
+
     Game* m_game_model;
     UserMessages m_current_message;
 

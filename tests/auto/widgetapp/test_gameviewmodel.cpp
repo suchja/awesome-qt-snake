@@ -23,7 +23,11 @@ private slots:
     void processKeyboardInput_shouldReturnX_whenCalledWithYKey_data();
     void processKeyboardInput_shouldReturnX_whenCalledWithYKey();
     void processKeyboardInput_shouldResultInGameStartedSignal_whenInitiallyCalledWithDirection();
-    void processKeyboardInput_shouldSignalUserMessageUpdated_whenUnsupportedKeyPressed();
+    void processKeyboardInput_shouldSignalUserMessageUpdated_whenGameStarted();
+    void processKeyboardInput_shouldSignalUserMessageUpdated_whenUnsupportedKeyAfterGameStarted();
+    void processKeyboardInput_shouldSignalUserMessageUpdated_whenSupportedKeyAfterUnsupportedAndGameStarted();
+    void processKeyboardInput_shouldNotSignalUserMessageUpdated_whenUnsupportedKeyPressedBeforeGameStarted();
+    void processKeyboardInput_shouldNotSignalUserMessageUpdated_whenMessageDoesNotChange();
 
     void getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove_data();
     void getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove();
@@ -148,7 +152,7 @@ void test_GameViewModel::processKeyboardInput_shouldReturnX_whenCalledWithYKey()
     QCOMPARE(actual, expected_result);
 }
 
-void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whenUnsupportedKeyPressed() {
+void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whenGameStarted() {
     // ARRANGE
     Game game_dependency = Game(20, 20);
 
@@ -156,7 +160,75 @@ void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whe
     QSignalSpy is_updated_signal(&sut, SIGNAL(userMessageUpdated(UserMessages)));
 
     // ACT
-      // test doesn't care about return value!
+    // test doesn't care about return value!
+    sut.processKeyboardAction(Qt::Key_Down);
+
+    // ASSERT
+    QCOMPARE(is_updated_signal.count(), 1);
+    QList<QVariant> arguments = is_updated_signal.takeFirst();
+    QCOMPARE((UserMessages)arguments.at(0).toInt(), UserMessages::None);
+}
+
+void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whenSupportedKeyAfterUnsupportedAndGameStarted() {
+    // ARRANGE
+    Game game_dependency = Game(20, 20);
+
+    GameViewModel sut(&game_dependency);
+    sut.processKeyboardAction(Qt::Key_Up); // start game
+    sut.processKeyboardAction(Qt::Key_Escape); // set to unsupported key
+    QSignalSpy is_updated_signal(&sut, SIGNAL(userMessageUpdated(UserMessages)));
+
+    // ACT
+    // test doesn't care about return value!
+    sut.processKeyboardAction(Qt::Key_Up);
+
+    // ASSERT
+    QCOMPARE(is_updated_signal.count(), 1);
+    QList<QVariant> arguments = is_updated_signal.takeFirst();
+    QCOMPARE((UserMessages)arguments.at(0).toInt(), UserMessages::None);
+}
+void test_GameViewModel::processKeyboardInput_shouldNotSignalUserMessageUpdated_whenUnsupportedKeyPressedBeforeGameStarted() {
+    // ARRANGE
+    Game game_dependency = Game(20, 20);
+
+    GameViewModel sut(&game_dependency);
+    QSignalSpy is_updated_signal(&sut, SIGNAL(userMessageUpdated(UserMessages)));
+
+    // ACT
+    // test doesn't care about return value!
+    sut.processKeyboardAction(Qt::Key_Return);
+
+    // ASSERT
+    QCOMPARE(is_updated_signal.count(), 0);
+}
+
+void test_GameViewModel::processKeyboardInput_shouldNotSignalUserMessageUpdated_whenMessageDoesNotChange() {
+    // ARRANGE
+    Game game_dependency = Game(20, 20);
+
+    GameViewModel sut(&game_dependency);
+    sut.processKeyboardAction(Qt::Key_Up); // start game
+    sut.processKeyboardAction(Qt::Key_Escape); // set to unsupported key
+    QSignalSpy is_updated_signal(&sut, SIGNAL(userMessageUpdated(UserMessages)));
+
+    // ACT
+    // test doesn't care about return value!
+    sut.processKeyboardAction(Qt::Key_Escape);
+
+    // ASSERT
+    QCOMPARE(is_updated_signal.count(), 0);
+}
+
+void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whenUnsupportedKeyAfterGameStarted() {
+    // ARRANGE
+    Game game_dependency = Game(20, 20);
+
+    GameViewModel sut(&game_dependency);
+    sut.processKeyboardAction(Qt::Key_Left); // we need to start game first!
+    QSignalSpy is_updated_signal(&sut, SIGNAL(userMessageUpdated(UserMessages)));
+
+    // ACT
+    //   test doesn't care about return value!
     sut.processKeyboardAction(Qt::Key_Return);
 
     // ASSERT
@@ -164,6 +236,7 @@ void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whe
     QList<QVariant> arguments = is_updated_signal.takeFirst();
     QCOMPARE((UserMessages)arguments.at(0).toInt(), UserMessages::KeyNotSupported);
 }
+
 
 void test_GameViewModel::getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove_data() {
     QTest::addColumn<Qt::Key>("key_code");

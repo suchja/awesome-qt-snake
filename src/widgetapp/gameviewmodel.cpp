@@ -48,6 +48,7 @@ UserMessages GameViewModel::getCurrentUserMessage() const
 
 void GameViewModel::startGame()
 {
+    updateUserMessage(UserMessages::None);
     m_current_message = UserMessages::None;
     emit gameStarted();
 }
@@ -69,11 +70,11 @@ bool GameViewModel::processKeyboardAction(int key_code)
         m_game_model->setMoveDirection(Direction::MoveDown);
         break;
     default:
-        m_current_message = UserMessages::KeyNotSupported;
-        emit userMessageUpdated(m_current_message);
+        updateUserMessage(UserMessages::KeyNotSupported);
         return false;
     }
 
+    updateUserMessage(UserMessages::None);
     return true;
 }
 
@@ -81,4 +82,19 @@ void GameViewModel::executeMove()
 {
     m_game_model->executeMove();
     emit gameUpdated();
+}
+
+void GameViewModel::updateUserMessage(UserMessages new_message)
+{
+    if (m_current_message == new_message)
+        return;
+
+    if (!m_game_model->isGameStarted())
+    {
+        if (new_message != UserMessages::None)
+            return;
+    }
+
+    m_current_message = new_message;
+    emit userMessageUpdated(m_current_message);
 }

@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     createGame();
 
     connect(m_view_model, SIGNAL(gameStarted()), this, SLOT(startGame()));
+    connect(m_view_model, SIGNAL(userMessageUpdated(UserMessages)), this, SLOT(visualizeUserMessage(UserMessages)));
 
     // connect game with UI
     m_graphics_view->installEventFilter(this);
@@ -66,6 +67,9 @@ void MainWindow::visualizeUserMessage(UserMessages message)
         break;
     case UserMessages::StartGame :
         ui->statusbar->showMessage("Press any arrow key to start game!");
+        break;
+    case UserMessages::KeyNotSupported :
+        ui->statusbar->showMessage("Key is not supported!");
         break;
     default:
         break;

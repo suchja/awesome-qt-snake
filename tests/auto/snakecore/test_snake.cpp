@@ -24,6 +24,9 @@ private slots:
     void getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder();
     void getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data();
     void getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder();
+
+    void setMoveDirection_shouldReturnWhetherNewDirectionWasAccepted_data();
+    void setMoveDirection_shouldReturnWhetherNewDirectionWasAccepted();
 };
 
 test_Snake::test_Snake() {}
@@ -164,7 +167,7 @@ void test_Snake::getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder
     QFETCH(int, move_count);
     QFETCH(QList<QPoint>, expected_positions);
 
-    Snake sut(20, 20, this);
+    Snake sut(20, 20);
 
     sut.setMoveDirection(move_direction);
 
@@ -176,6 +179,36 @@ void test_Snake::getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder
 
     // ASSERT
     QCOMPARE(actual, expected_positions);
+}
+
+void test_Snake::setMoveDirection_shouldReturnWhetherNewDirectionWasAccepted_data() {
+    QTest::addColumn<Direction>("initial_direction");
+    QTest::addColumn<Direction>("new_direction");
+    QTest::addColumn<bool>("expected");
+
+    QTest::newRow("down -> up") << Direction::MoveDown << Direction::MoveUp << false;
+    QTest::newRow("up -> down") << Direction::MoveUp << Direction::MoveDown << false;
+    QTest::newRow("left -> right") << Direction::MoveLeft << Direction::MoveRight << false;
+    QTest::newRow("right -> left") << Direction::MoveRight << Direction::MoveLeft << false;
+    QTest::newRow("up -> left") << Direction::MoveUp << Direction::MoveLeft << true;
+    QTest::newRow("down -> left") << Direction::MoveDown << Direction::MoveLeft << true;
+    QTest::newRow("down -> right") << Direction::MoveDown << Direction::MoveRight << true;
+}
+
+void test_Snake::setMoveDirection_shouldReturnWhetherNewDirectionWasAccepted() {
+    // ARRANGE
+    QFETCH(Direction, initial_direction);
+    QFETCH(Direction, new_direction);
+    QFETCH(bool, expected);
+
+    Snake sut(20, 20);
+
+    // ACT
+    sut.setMoveDirection(initial_direction);
+    bool actual = sut.setMoveDirection(new_direction);
+
+    // ASSERT
+    QCOMPARE(actual, expected);
 }
 
 QTEST_APPLESS_MAIN(test_Snake)

@@ -27,18 +27,19 @@ bool Snake::isMoving() const
     return m_move_direction != Direction::NoMove;
 }
 
-void Snake::setMoveDirection(Direction new_direction)
+bool Snake::setMoveDirection(Direction new_direction)
 {
     if (m_move_direction == Direction::MoveLeft && new_direction == Direction::MoveRight)
-        return;
+        return false;
     if (m_move_direction == Direction::MoveRight && new_direction == Direction::MoveLeft)
-        return;
+        return false;
     if (m_move_direction == Direction::MoveUp && new_direction == Direction::MoveDown)
-        return;
+        return false;
     if (m_move_direction == Direction::MoveDown && new_direction == Direction::MoveUp)
-        return;
+        return false;
 
     m_move_direction = new_direction;
+    return true;
 }
 
 void Snake::executeMove()

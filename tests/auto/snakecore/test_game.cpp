@@ -41,6 +41,7 @@ private slots:
 
     void getSnakeHeadPosition_shouldMoveOneTiletoNewDirection_whenCalledAfterSettingDirectionAndExecutingMove_data();
     void getSnakeHeadPosition_shouldMoveOneTiletoNewDirection_whenCalledAfterSettingDirectionAndExecutingMove();
+    void getSnakeHeadPosition_shouldMoveOneTileIntoSameDirection_whenCalledWithSameDirectionAndExecutingMove();
 };
 
 test_Game::test_Game() {}
@@ -174,6 +175,24 @@ void test_Game::getSnakeHeadPosition_shouldMoveOneTiletoNewDirection_whenCalledA
 
     // ASSERT
     QCOMPARE(actual, expected_position);
+}
+
+void test_Game::getSnakeHeadPosition_shouldMoveOneTileIntoSameDirection_whenCalledWithSameDirectionAndExecutingMove() {
+    // ARRANGE
+    Game sut(20, 20);
+    QPoint expected(10, 8);
+
+    //   start game and move up to prepare for the test
+    sut.setMoveDirection(Direction::MoveUp);
+    sut.executeMove();
+
+    // ACT
+    sut.setMoveDirection(Direction::MoveUp);
+    sut.executeMove();
+    QPoint actual = sut.getSnakeHeadPosition();
+
+    // ASSERT
+    QCOMPARE(actual, expected);
 }
 
 QTEST_APPLESS_MAIN(test_Game)

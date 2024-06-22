@@ -69,6 +69,8 @@ bool GameViewModel::processKeyboardAction(int key_code)
         m_game_model->setMoveDirection(Direction::MoveDown);
         break;
     default:
+        m_current_message = UserMessages::KeyNotSupported;
+        emit userMessageUpdated(m_current_message);
         return false;
     }
 

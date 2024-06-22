@@ -9,7 +9,8 @@ class Game;
 
 enum class UserMessages {
     None,
-    StartGame
+    StartGame,
+    KeyNotSupported
 };
 
 class GameViewModel : public QObject
@@ -39,9 +40,9 @@ private slots:
 signals:
     void gameStarted();
     void gameUpdated();
+    void userMessageUpdated(UserMessages message);
 
 private:
-
     Game* m_game_model;
     UserMessages m_current_message;
 

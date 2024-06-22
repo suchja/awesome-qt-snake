@@ -23,6 +23,7 @@ private slots:
     void processKeyboardInput_shouldReturnX_whenCalledWithYKey_data();
     void processKeyboardInput_shouldReturnX_whenCalledWithYKey();
     void processKeyboardInput_shouldResultInGameStartedSignal_whenInitiallyCalledWithDirection();
+    void processKeyboardInput_shouldSignalUserMessageUpdated_whenUnsupportedKeyPressed();
 
     void getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove_data();
     void getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove();
@@ -145,6 +146,23 @@ void test_GameViewModel::processKeyboardInput_shouldReturnX_whenCalledWithYKey()
 
     // ASSERT
     QCOMPARE(actual, expected_result);
+}
+
+void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whenUnsupportedKeyPressed() {
+    // ARRANGE
+    Game game_dependency = Game(20, 20);
+
+    GameViewModel sut(&game_dependency);
+    QSignalSpy is_updated_signal(&sut, SIGNAL(userMessageUpdated(UserMessages)));
+
+    // ACT
+      // test doesn't care about return value!
+    sut.processKeyboardAction(Qt::Key_Return);
+
+    // ASSERT
+    QCOMPARE(is_updated_signal.count(), 1);
+    QList<QVariant> arguments = is_updated_signal.takeFirst();
+    QCOMPARE((UserMessages)arguments.at(0).toInt(), UserMessages::KeyNotSupported);
 }
 
 void test_GameViewModel::getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove_data() {

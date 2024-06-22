@@ -24,6 +24,7 @@ public:
 
     void setMoveDirection(Direction new_direction);
     void executeMove();
+    bool isGameStarted();
 
 signals:
     void isStarted();

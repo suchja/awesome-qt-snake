@@ -36,6 +36,8 @@ private slots:
 
     void isStarted_shouldBeEmitted_whenMoveDirectionIsSetFromNoMoveToSomethingElse_data();
     void isStarted_shouldBeEmitted_whenMoveDirectionIsSetFromNoMoveToSomethingElse();
+    void isStarted_shouldReturnFalse_whenGameWasNotStarted();
+    void isStarted_shouldReturnTrue_whenGameWasStarted();
 
     void getSnakeHeadPosition_shouldMoveOneTiletoNewDirection_whenCalledAfterSettingDirectionAndExecutingMove_data();
     void getSnakeHeadPosition_shouldMoveOneTiletoNewDirection_whenCalledAfterSettingDirectionAndExecutingMove();
@@ -121,6 +123,30 @@ void test_Game::isStarted_shouldBeEmitted_whenMoveDirectionIsSetFromNoMoveToSome
 
     // ASSERT
     QCOMPARE(is_started_signal.count(), expected_signal_count);
+}
+
+void test_Game::isStarted_shouldReturnFalse_whenGameWasNotStarted() {
+    // ARRANGE
+    Game sut(20, 20);
+
+    // ACT
+    bool actual = sut.isGameStarted();
+
+    // ASSERT
+    QCOMPARE(actual, false);
+}
+
+void test_Game::isStarted_shouldReturnTrue_whenGameWasStarted() {
+    // ARRANGE
+    Game sut(20, 20);
+
+    sut.setMoveDirection(Direction::MoveLeft); // required to start game!
+
+    // ACT
+    bool actual = sut.isGameStarted();
+
+    // ASSERT
+    QCOMPARE(actual, true);
 }
 
 void test_Game::getSnakeHeadPosition_shouldMoveOneTiletoNewDirection_whenCalledAfterSettingDirectionAndExecutingMove_data()

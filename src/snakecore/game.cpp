@@ -59,3 +59,8 @@ void Game::addOccupiedPositions(QList<QPoint>& positions) const
     positions << m_snake->getHead();
     positions << m_food;
 }
+
+bool Game::isGameStarted()
+{
+    return m_snake->isMoving();
+}

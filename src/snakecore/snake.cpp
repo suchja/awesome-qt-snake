@@ -8,8 +8,9 @@ Snake::Snake(int board_row_count, int board_column_count, QObject *parent) :
     m_move_direction = Direction::NoMove;
 
     m_head = QPoint(m_board_row_count/2, m_board_column_count/2);
-    QPoint body_element(m_head.x() - 1, m_head.y());
-    m_body << body_element;
+    QPoint first_element(m_head.x() - 1, m_head.y());
+    QPoint second_element(m_head.x() - 2, m_head.y());
+    m_body << first_element << second_element;
 }
 
 QPoint Snake::getHead() const

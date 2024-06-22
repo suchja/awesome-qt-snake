@@ -16,8 +16,9 @@ private slots:
     void getBody_shouldReturnOneElement_whenCalledAfterConstructor();
     void getBody_shouldReturnElementConnectedLeftToHead_whenCalledAfterConstructor();
 
-    void getHead_shouldReturnSameDirection_whenCalledWithOppositeDirectionAndExecutingMove_data();
-    void getHead_shouldReturnSameDirection_whenCalledWithOppositeDirectionAndExecutingMove();
+    void shouldStayOnDirection_whenCalledWithOppositeDirectionAndExecutingMove_data();
+    void shouldStayOnDirection_whenCalledWithOppositeDirectionAndExecutingMove();
+    void shouldStayOnDirection_whenCalledWithSameDirectionAndExecutingMove();
 
     void getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data();
     void getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder();
@@ -95,7 +96,7 @@ void test_Snake::getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder
     QCOMPARE(actual, expected_position);
 }
 
-void test_Snake::getHead_shouldReturnSameDirection_whenCalledWithOppositeDirectionAndExecutingMove_data() {
+void test_Snake::shouldStayOnDirection_whenCalledWithOppositeDirectionAndExecutingMove_data() {
     QTest::addColumn<Direction>("initial_direction");
     QTest::addColumn<Direction>("opposing_direction");
     QTest::addColumn<QPoint>("expected_position");
@@ -106,7 +107,7 @@ void test_Snake::getHead_shouldReturnSameDirection_whenCalledWithOppositeDirecti
     QTest::newRow("right -> left") << Direction::MoveRight << Direction::MoveLeft << QPoint(12, 10);
 }
 
-void test_Snake::getHead_shouldReturnSameDirection_whenCalledWithOppositeDirectionAndExecutingMove() {
+void test_Snake::shouldStayOnDirection_whenCalledWithOppositeDirectionAndExecutingMove() {
     // ARRANGE
     QFETCH(Direction, initial_direction);
     QFETCH(Direction, opposing_direction);
@@ -125,6 +126,25 @@ void test_Snake::getHead_shouldReturnSameDirection_whenCalledWithOppositeDirecti
 
     // ASSERT
     QCOMPARE(actual, expected_position);
+}
+
+void test_Snake::shouldStayOnDirection_whenCalledWithSameDirectionAndExecutingMove() {
+    // ARRANGE
+    Snake sut(20, 20);
+    QPoint expected(10, 8);
+
+    //   start game and move up to prepare for the test
+    sut.setMoveDirection(Direction::MoveUp);
+    sut.executeMove();
+
+    // ACT
+    sut.setMoveDirection(Direction::MoveUp);
+    sut.executeMove();
+    QPoint actual = sut.getHead();
+
+    // ASSERT
+    QCOMPARE(actual, expected);
+
 }
 
 void test_Snake::getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data() {

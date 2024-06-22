@@ -16,6 +16,9 @@ private slots:
     void getBody_shouldReturnOneElement_whenCalledAfterConstructor();
     void getBody_shouldReturnElementConnectedLeftToHead_whenCalledAfterConstructor();
 
+    void getHead_shouldReturnSameDirection_whenCalledWithOppositeDirectionAndExecutingMove_data();
+    void getHead_shouldReturnSameDirection_whenCalledWithOppositeDirectionAndExecutingMove();
+
     void getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data();
     void getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder();
     void getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data();
@@ -86,6 +89,38 @@ void test_Snake::getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder
     for (int i = 0; i < move_count; ++i)
         sut.executeMove();
 
+    QPoint actual = sut.getHead();
+
+    // ASSERT
+    QCOMPARE(actual, expected_position);
+}
+
+void test_Snake::getHead_shouldReturnSameDirection_whenCalledWithOppositeDirectionAndExecutingMove_data() {
+    QTest::addColumn<Direction>("initial_direction");
+    QTest::addColumn<Direction>("opposing_direction");
+    QTest::addColumn<QPoint>("expected_position");
+
+    QTest::newRow("down -> up") << Direction::MoveDown << Direction::MoveUp << QPoint(10, 12);
+    QTest::newRow("up -> down") << Direction::MoveUp << Direction::MoveDown << QPoint(10, 8);
+    QTest::newRow("left -> right") << Direction::MoveLeft << Direction::MoveRight << QPoint(8, 10);
+    QTest::newRow("right -> left") << Direction::MoveRight << Direction::MoveLeft << QPoint(12, 10);
+}
+
+void test_Snake::getHead_shouldReturnSameDirection_whenCalledWithOppositeDirectionAndExecutingMove() {
+    // ARRANGE
+    QFETCH(Direction, initial_direction);
+    QFETCH(Direction, opposing_direction);
+    QFETCH(QPoint, expected_position);
+
+    Snake sut(20, 20);
+
+    //   start game and move down to prepare for the test
+    sut.setMoveDirection(initial_direction);
+    sut.executeMove();
+
+    // ACT
+    sut.setMoveDirection(opposing_direction);
+    sut.executeMove();
     QPoint actual = sut.getHead();
 
     // ASSERT

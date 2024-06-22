@@ -29,6 +29,15 @@ bool Snake::isMoving() const
 
 void Snake::setMoveDirection(Direction new_direction)
 {
+    if (m_move_direction == Direction::MoveLeft && new_direction == Direction::MoveRight)
+        return;
+    if (m_move_direction == Direction::MoveRight && new_direction == Direction::MoveLeft)
+        return;
+    if (m_move_direction == Direction::MoveUp && new_direction == Direction::MoveDown)
+        return;
+    if (m_move_direction == Direction::MoveDown && new_direction == Direction::MoveUp)
+        return;
+
     m_move_direction = new_direction;
 }
 

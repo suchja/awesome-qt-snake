@@ -26,6 +26,7 @@ private slots:
     void processKeyboardInput_shouldSignalUserMessageUpdated_whenGameStarted();
     void processKeyboardInput_shouldSignalUserMessageUpdated_whenUnsupportedKeyAfterGameStarted();
     void processKeyboardInput_shouldSignalUserMessageUpdated_whenSupportedKeyAfterUnsupportedAndGameStarted();
+    void processKeyboardInput_shouldSignalUserMessageUpdated_whenOppositeDirectionIsPressed();
     void processKeyboardInput_shouldNotSignalUserMessageUpdated_whenUnsupportedKeyPressedBeforeGameStarted();
     void processKeyboardInput_shouldNotSignalUserMessageUpdated_whenMessageDoesNotChange();
 
@@ -237,6 +238,24 @@ void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whe
     QCOMPARE((UserMessages)arguments.at(0).toInt(), UserMessages::KeyNotSupported);
 }
 
+void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whenOppositeDirectionIsPressed() {
+    // ARRANGE
+    Game game_dependency = Game(20, 20);
+
+    GameViewModel sut(&game_dependency);
+    sut.processKeyboardAction(Qt::Key_Left); // we need to start game first!
+
+    QSignalSpy is_updated_signal(&sut, SIGNAL(userMessageUpdated(UserMessages)));
+
+    // ACT
+    //   test doesn't care about return value!
+    sut.processKeyboardAction(Qt::Key_Right);
+
+    // ASSERT
+    QCOMPARE(is_updated_signal.count(), 1);
+    QList<QVariant> arguments = is_updated_signal.takeFirst();
+    QCOMPARE((UserMessages)arguments.at(0).toInt(), UserMessages::WrongDirection);
+}
 
 void test_GameViewModel::getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove_data() {
     QTest::addColumn<Qt::Key>("key_code");

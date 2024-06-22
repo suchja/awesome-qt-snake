@@ -53,26 +53,31 @@ void GameViewModel::startGame()
 
 bool GameViewModel::processKeyboardAction(int key_code)
 {
+    bool is_direction_valid = true;
     switch (key_code)
     {
     case Qt::Key_Left:
-        m_game_model->setMoveDirection(Direction::MoveLeft);
+        is_direction_valid = m_game_model->setMoveDirection(Direction::MoveLeft);
         break;
     case Qt::Key_Right:
-        m_game_model->setMoveDirection(Direction::MoveRight);
+        is_direction_valid = m_game_model->setMoveDirection(Direction::MoveRight);
         break;
     case Qt::Key_Up:
-        m_game_model->setMoveDirection(Direction::MoveUp);
+        is_direction_valid = m_game_model->setMoveDirection(Direction::MoveUp);
         break;
     case Qt::Key_Down:
-        m_game_model->setMoveDirection(Direction::MoveDown);
+        is_direction_valid = m_game_model->setMoveDirection(Direction::MoveDown);
         break;
     default:
         updateUserMessage(UserMessages::KeyNotSupported);
         return false;
     }
 
-    updateUserMessage(UserMessages::None);
+    if (is_direction_valid)
+        updateUserMessage(UserMessages::None);
+    else
+        updateUserMessage(UserMessages::WrongDirection);
+
     return true;
 }
 

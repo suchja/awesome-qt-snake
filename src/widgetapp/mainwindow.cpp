@@ -70,6 +70,9 @@ void MainWindow::visualizeUserMessage(UserMessages message)
     case UserMessages::KeyNotSupported :
         ui->statusbar->showMessage("Key is not supported!");
         break;
+    case UserMessages::WrongDirection :
+        ui->statusbar->showMessage("Opposite direction not allowed!");
+        break;
     default:
         break;
     }

@@ -10,7 +10,8 @@ class Game;
 enum class UserMessages {
     None,
     StartGame,
-    KeyNotSupported
+    KeyNotSupported,
+    WrongDirection
 };
 
 class GameViewModel : public QObject

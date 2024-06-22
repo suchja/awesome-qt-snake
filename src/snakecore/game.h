@@ -22,7 +22,7 @@ public:
 
     QPoint getFoodPosition() const;
 
-    void setMoveDirection(Direction new_direction);
+    bool setMoveDirection(Direction new_direction);
     void executeMove();
     bool isGameStarted();
 

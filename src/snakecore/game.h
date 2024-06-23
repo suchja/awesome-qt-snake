@@ -13,7 +13,7 @@ class Game : public QObject
     Q_OBJECT
 
 public:
-    Game(int board_row_count, int board_column_count, QObject* parent = nullptr);
+    explicit Game(int board_row_count, int board_column_count, int snake_body_length = 1, QObject* parent = nullptr);
 
     QRect getBoardDimensions() const;
 

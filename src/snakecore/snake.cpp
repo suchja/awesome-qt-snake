@@ -1,6 +1,6 @@
 #include "snake.h"
 
-Snake::Snake(int board_row_count, int board_column_count, QObject *parent) :
+Snake::Snake(int board_row_count, int board_column_count, int body_count, QObject *parent) :
     QObject{parent},
     m_board_row_count(board_row_count),
     m_board_column_count(board_column_count)
@@ -8,9 +8,9 @@ Snake::Snake(int board_row_count, int board_column_count, QObject *parent) :
     m_move_direction = Direction::NoMove;
 
     m_head = QPoint(m_board_row_count/2, m_board_column_count/2);
-    QPoint first_element(m_head.x() - 1, m_head.y());
-    QPoint second_element(m_head.x() - 2, m_head.y());
-    m_body << second_element << first_element;
+    for (int i = 0; i < body_count; ++i) {
+        m_body.prepend(QPoint(m_head.x() - (i + 1), m_head.y()));
+    }
 }
 
 QPoint Snake::getHead() const

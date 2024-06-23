@@ -13,8 +13,8 @@ public:
 
 private slots:
     void getHead_shouldReturnCenterOfBoard_whenCalledAfterConstructor();
-    void getBody_shouldReturnOneElement_whenCalledAfterConstructor();
-    void getBody_shouldReturnElementConnectedLeftToHead_whenCalledAfterConstructor();
+    void getBody_shouldReturnSpecifiedAmountOfElements_whenCalledAfterConstructor();
+    void getBody_shouldReturnElementsConnectedLeftToHead_whenCalledAfterConstructor();
 
     void shouldStayOnDirection_whenCalledWithOppositeDirectionAndExecutingMove_data();
     void shouldStayOnDirection_whenCalledWithOppositeDirectionAndExecutingMove();
@@ -35,7 +35,7 @@ test_Snake::~test_Snake() {}
 
 void test_Snake::getHead_shouldReturnCenterOfBoard_whenCalledAfterConstructor() {
     // ARRANGE
-    Snake sut(20, 20, this);
+    Snake sut(20, 20);
     QPoint expected(10, 10);
 
     // ACT
@@ -45,27 +45,28 @@ void test_Snake::getHead_shouldReturnCenterOfBoard_whenCalledAfterConstructor() 
     QCOMPARE(actual, expected);
 }
 
-void test_Snake::getBody_shouldReturnOneElement_whenCalledAfterConstructor() {
+void test_Snake::getBody_shouldReturnSpecifiedAmountOfElements_whenCalledAfterConstructor() {
     // ARRANGE
-    Snake sut(20, 20, this);
+    Snake sut(20, 20, 2);
 
     // ACT
     QList<QPoint> actual = sut.getBody();
 
     // ASSERT
-    QCOMPARE(actual.count(), 1);
+    QCOMPARE(actual.count(), 2);
 }
 
-void test_Snake::getBody_shouldReturnElementConnectedLeftToHead_whenCalledAfterConstructor() {
+void test_Snake::getBody_shouldReturnElementsConnectedLeftToHead_whenCalledAfterConstructor() {
     // ARRANGE
-    Snake sut(20, 20, this);
-    QPoint expected(9, 10);
+    Snake sut(20, 20, 2);
+    QList<QPoint> expected_elements;
+    expected_elements << QPoint(8, 10) << QPoint(9, 10);
 
     // ACT
-    QPoint actual = sut.getBody().at(0);
+    QList<QPoint> actual = sut.getBody();
 
     // ASSERT
-    QCOMPARE(actual, expected);
+    QCOMPARE(actual, expected_elements);
 }
 
 void test_Snake::getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data() {
@@ -85,7 +86,7 @@ void test_Snake::getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder
     QFETCH(int, move_count);
     QFETCH(QPoint, expected_position);
 
-    Snake sut(20, 20, this);
+    Snake sut(20, 20);
 
     sut.setMoveDirection(move_direction);
 

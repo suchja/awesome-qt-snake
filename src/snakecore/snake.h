@@ -10,7 +10,7 @@ class Snake : public QObject
 {
     Q_OBJECT
 public:
-    explicit Snake(int board_row_count, int board_column_count, QObject *parent = nullptr);
+    explicit Snake(int board_row_count, int board_column_count, int body_count = 1, QObject *parent = nullptr);
 
     QPoint getHead() const;
     QList<QPoint> getBody() const;

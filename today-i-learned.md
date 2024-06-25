@@ -3,6 +3,47 @@ While working on this project I (re-) learned a lot about C++, Qt, TDD and more.
 
 Therefore I try to write one or the other learnings I during this project. In the future I would like to have a dedicated part of my blog, where i post these TIL. So without further ado here are my learnings!
 
+## Parameterized Tests with QTest
+Using parameterized tests is one of the *Test Patterns* described in the book *xUnit Test Patterns - Refactoring Test Code* by *Gerard Meszaros*. Its intention is to reduce *Test Code Duplication*.
+
+*QTest* supports this with some specific methods and macros. The general idea is to create a method (`private slot`), with the same name like the test that should be parameterized, and add the `_data` suffix. In this method the different data-sets used to run the test case are defined. In the test case the parameters can be included via the `QFETCH` macro. A complete example might then look like this:
+
+```cpp
+#include <QtTest/QtTest>
+
+class MyTest : public QObject {
+    Q_OBJECT
+
+private slots:
+    void myTestFunction();
+    void myTestFunction_data();
+};
+
+void MyTest::myTestFunction_data() {
+    QTest::addColumn<int>("input");
+    QTest::addColumn<int>("expectedOutput");
+
+    QTest::newRow("simple case 1") << 1 << 2;
+    QTest::newRow("another simple case") << 2 << 4;
+    QTest::newRow("complex case with spaces") << 3 << 6;
+}
+
+void MyTest::myTestFunction() {
+    QFETCH(int, input);
+    QFETCH(int, expectedOutput);
+
+    // Replace the following line with the actual function you want to test.
+    int actualOutput = input * 2;
+
+    QCOMPARE(actualOutput, expectedOutput);
+}
+
+QTEST_MAIN(MyTest)
+#include "mytest.moc"
+```
+
+In context of the *AwesomeQtSnake*, [this data-method](https://github.com/suchja/awesome-qt-snake/blob/14cca1eb55135ce2c0b5720d5149fe9554c10f80/tests/auto/snakecore/test_game.cpp#L97) and its [test-method](https://github.com/suchja/awesome-qt-snake/blob/14cca1eb55135ce2c0b5720d5149fe9554c10f80/tests/auto/snakecore/test_game.cpp#L109) is a real-life example.
+
 ## Rule of Five (Memory Management / Resource Ownership)
 C++11 introduced performance improvements with regards to the copying of "heavy" objects (those requiring deep copy due to the handling of dynamic memory allocation/handling). These improvements are usually referred to as *move semantics*. The general idea is, that dynamically allocated ressources are not copied between two objects of the same type, but instead *"moved"*. This (usually?) includes that the object containing the resources before releases them.
 

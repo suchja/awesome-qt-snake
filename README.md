@@ -5,6 +5,8 @@ Its been a while since my last contact with C++ and I've never made a deep dive 
 3. Show how I usually develop (as far as that is possible with such a simple example)
 4. [Document my "learnings"](today-i-learned.md) (based on the Today I Learned (TIL) approach as seen by [Josh Branchaud](https://github.com/jbranchaud/til))
 
+In order to figure out some of the basic technology, a [spike](https://github.com/suchja/awesome-qt-snake-spike) was developed to test certain aspects. Once this project reaches [Milestone v0.5](https://github.com/suchja/awesome-qt-snake/milestones) the spike will be deleted as it is a throw away prototype.
+
 ## Requirements
 ### Functional Requirements
 Based on my believe that a software's primary purpose it to provide value to its user (e.g. simplify repetitive tasks for the user or provide some entertainment in this case), the functional requirements are defined as user stories. Looking into user stories I agree with [this article from John Hayse](https://johnhayes.medium.com/the-forgotten-agility-of-user-stories-d24bde0f8b0a):

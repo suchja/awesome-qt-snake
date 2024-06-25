@@ -90,7 +90,7 @@ int main() {
 *Hint: I need to learn more about temporary objects and expression evaluation*!
 
 ## Rule of Three (Memory Management / Resource Ownership)
-*For using C++11 and newer see Rule of Five as well*!
+*For using C++11 and newer see [Rule of Five](#rule-of-five-memory-management--resource-ownership) as well*!
 
 Probably since the beginning or early start of C++ the *Rule of Three* exists. Generally speaking it applies in cases where an instance of a class handles dynamic memory (e.g. instantiates new objects via `new` or takes ownership - via some kind of pointer - of objects allocated dynamically). It states that
 

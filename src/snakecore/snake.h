@@ -27,6 +27,7 @@ private:
     QList<QPoint> m_body;
 
     Direction m_move_direction;
+    bool m_moved_since_last_change;
 
     const int m_board_row_count;
     const int m_board_column_count;

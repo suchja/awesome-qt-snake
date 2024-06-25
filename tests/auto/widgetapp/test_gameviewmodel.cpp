@@ -244,6 +244,7 @@ void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whe
 
     GameViewModel sut(&game_dependency);
     sut.processKeyboardAction(Qt::Key_Left); // we need to start game first!
+    sut.executeMove(); // and execute move to be allowed to change direction again
 
     QSignalSpy is_updated_signal(&sut, SIGNAL(userMessageUpdated(UserMessages)));
 

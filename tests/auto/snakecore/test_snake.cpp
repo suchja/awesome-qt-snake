@@ -20,6 +20,8 @@ private slots:
     void shouldStayOnDirection_whenCalledWithOppositeDirectionAndExecutingMove();
     void shouldStayOnDirection_whenCalledWithSameDirectionAndExecutingMove();
 
+    void shouldIgnoreNewDirection_whenExecuteMoveWasNotCalledBefore();
+
     void getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data();
     void getHead_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder();
     void getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data();
@@ -150,6 +152,23 @@ void test_Snake::shouldStayOnDirection_whenCalledWithSameDirectionAndExecutingMo
     QCOMPARE(actual, expected);
 }
 
+void test_Snake::shouldIgnoreNewDirection_whenExecuteMoveWasNotCalledBefore() {
+    // ARRANGE
+    Snake sut(20, 20);
+    DirectionChangeResult expected = DirectionChangeResult::TooManyPerMove;
+
+    //   start game and move up to prepare for the test
+    sut.setMoveDirection(Direction::MoveDown);
+    sut.executeMove();
+    sut.setMoveDirection(Direction::MoveLeft);
+
+    // ACT
+    DirectionChangeResult actual = sut.setMoveDirection(Direction::MoveUp);
+
+    // ASSERT
+    QCOMPARE(actual, expected);
+}
+
 void test_Snake::getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data() {
     QTest::addColumn<Direction>("move_direction");
     QTest::addColumn<int>("move_count");
@@ -203,8 +222,10 @@ void test_Snake::setMoveDirection_shouldReturnWhetherNewDirectionWasAccepted() {
 
     Snake sut(20, 20);
 
-    // ACT
     sut.setMoveDirection(initial_direction);
+    sut.executeMove();
+
+    // ACT
     DirectionChangeResult actual = sut.setMoveDirection(new_direction);
 
     // ASSERT

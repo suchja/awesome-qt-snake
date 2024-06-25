@@ -3,7 +3,8 @@
 Snake::Snake(int board_row_count, int board_column_count, int body_count, QObject *parent) :
     QObject{parent},
     m_board_row_count(board_row_count),
-    m_board_column_count(board_column_count)
+    m_board_column_count(board_column_count),
+    m_moved_since_last_change(true)
 {
     m_move_direction = Direction::NoMove;
 
@@ -30,6 +31,11 @@ bool Snake::isMoving() const
 
 DirectionChangeResult Snake::setMoveDirection(Direction new_direction)
 {
+    if (!m_moved_since_last_change)
+        return DirectionChangeResult::TooManyPerMove;
+
+    m_moved_since_last_change = false;
+
     if (m_move_direction == Direction::MoveLeft && new_direction == Direction::MoveRight)
         return DirectionChangeResult::OppositeDirection;
     if (m_move_direction == Direction::MoveRight && new_direction == Direction::MoveLeft)
@@ -45,6 +51,8 @@ DirectionChangeResult Snake::setMoveDirection(Direction new_direction)
 
 void Snake::executeMove()
 {
+    m_moved_since_last_change = true;
+
     m_body << m_head;
     m_body.removeFirst();
 

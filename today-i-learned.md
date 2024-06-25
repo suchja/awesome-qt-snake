@@ -3,6 +3,20 @@ While working on this project I (re-) learned a lot about C++, Qt, TDD and more.
 
 Therefore I try to write one or the other learnings I during this project. In the future I would like to have a dedicated part of my blog, where i post these TIL. So without further ado here are my learnings!
 
+## Rule of three (Memory Management / Resource Ownership)
+*For using C++11 and newer see Rule of Five as well*!
+
+Probably since the beginning or early start of C++ the *Rule of Three* exists. Generally speaking it applies in cases where an instance of a class handles dynamic memory (e.g. instantiates new objects via `new` or takes ownership - via some kind of pointer - of objects allocated dynamically). It states that
+
+> If a class needs a user-defined destructor, copy constructor, or copy assignment operator, it likely needs all three. - Probably "defined" by Bjarne Stroustrup.
+
+### Why the Rule of Three?
+- **Resource Management:** Ensures that resources are managed correctly. If you implement one of these special functions, it's likely because your class manages resources that need to be properly copied and destroyed.
+- **Preventing Issues:** Helps prevent resource leaks, double deletions, and undefined behavior that can result from improper handling of resources.
+
+### Personal Comment
+Even though I know the general approach (e.g. using a *destructor*, applying deep copies by *copy constructor* and/or *assignment operator*, ...), I wasn't aware or couldn't remeber this rule!
+
 ## Short-Circuit Evaluation
 C++ was designed from the beginning to support short-circuit evaluation in the logical operators `&&` (logical AND) and `||` (logical OR). That means:
 

@@ -3,7 +3,93 @@ While working on this project I (re-) learned a lot about C++, Qt, TDD and more.
 
 Therefore I try to write one or the other learnings I during this project. In the future I would like to have a dedicated part of my blog, where i post these TIL. So without further ado here are my learnings!
 
-## Rule of three (Memory Management / Resource Ownership)
+## Rule of Five (Memory Management / Resource Ownership)
+C++11 introduced performance improvements with regards to the copying of "heavy" objects (those requiring deep copy due to the handling of dynamic memory allocation/handling). These improvements are usually referred to as *move semantics*. The general idea is, that dynamically allocated ressources are not copied between two objects of the same type, but instead *"moved"*. This (usually?) includes that the object containing the resources before releases them.
+
+The *Rule of Five* states:
+
+> Extends the Rule of Three to include the move constructor and move assignment operator, accommodating move semantics.
+
+To handle this properly a new type of reference was introduced (see RValue Reference). With this the *move constructor* as well as the *move assignment operator* can do their job. Following is a complete example:
+
+```cpp
+#include <iostream>
+#include <utility> // for std::move
+
+class Resource {
+public:
+    Resource(size_t size) : size(size), data(new int[size]) {
+        std::cout << "Resource acquired\n";
+    }
+
+    // Destructor
+    ~Resource() {
+        delete[] data;
+        std::cout << "Resource destroyed\n";
+    }
+
+    // Copy Constructor
+    Resource(const Resource& other) : size(other.size), data(new int[other.size]) {
+        std::copy(other.data, other.data + other.size, data);
+        std::cout << "Resource copied\n";
+    }
+
+    // Copy Assignment Operator
+    Resource& operator=(const Resource& other) {
+        if (this != &other) {
+            delete[] data; // Release old resource
+            size = other.size;
+            data = new int[other.size];
+            std::copy(other.data, other.data + other.size, data);
+            std::cout << "Resource assigned\n";
+        }
+        return *this;
+    }
+
+    // Move Constructor
+    Resource(Resource&& other) noexcept : size(other.size), data(other.data) {
+        other.size = 0;
+        other.data = nullptr;
+        std::cout << "Resource moved\n";
+    }
+
+    // Move Assignment Operator
+    Resource& operator=(Resource&& other) noexcept {
+        if (this != &other) {
+            delete[] data; // Release old resource
+            size = other.size;
+            data = other.data;
+            other.size = 0;
+            other.data = nullptr;
+            std::cout << "Resource move-assigned\n";
+        }
+        return *this;
+    }
+
+private:
+    size_t size;
+    int* data;
+};
+
+int main() {
+    Resource res1(10);            // Acquires resource
+    Resource res2(std::move(res1)); // Moves resource
+
+    Resource res3(20);
+    res3 = std::move(res2);       // Moves resource
+
+    return 0;
+}
+```
+
+### Why the Rule of Five?
+1. Avoiding Deep Copies: Move operations transfer ownership of resources rather than copying them. This is especially beneficial for classes that manage large amounts of data or resources, such as dynamic arrays, file handles, or network connections.
+2. Efficiency: Move operations are typically constant time (O(1)), while copy operations are linear time (O(n)), where n is the number of elements or the size of the resource.
+3. Temporary Objects: Move semantics are particularly useful for managing temporary objects (rvalues) created during expression evaluation. They allow for the efficient transfer of temporary resources without unnecessary allocations and deallocations.
+
+*Hint: I need to learn more about temporary objects and expression evaluation*!
+
+## Rule of Three (Memory Management / Resource Ownership)
 *For using C++11 and newer see Rule of Five as well*!
 
 Probably since the beginning or early start of C++ the *Rule of Three* exists. Generally speaking it applies in cases where an instance of a class handles dynamic memory (e.g. instantiates new objects via `new` or takes ownership - via some kind of pointer - of objects allocated dynamically). It states that

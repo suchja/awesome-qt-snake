@@ -9,5 +9,10 @@ enum class Direction {
     MoveDown
 };
 
+enum class DirectionChangeResult {
+    Succeeded,
+    OppositeDirection,
+    TooManyPerMove
+};
 
 #endif // SNAKECORE_H

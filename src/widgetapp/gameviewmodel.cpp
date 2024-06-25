@@ -48,29 +48,37 @@ UserMessages GameViewModel::getCurrentUserMessage() const
 
 void GameViewModel::startGame()
 {
-    m_current_message = UserMessages::None;
     emit gameStarted();
 }
 
 bool GameViewModel::processKeyboardAction(int key_code)
 {
+    DirectionChangeResult direction_set = DirectionChangeResult::Succeeded;
     switch (key_code)
     {
     case Qt::Key_Left:
-        m_game_model->setMoveDirection(Direction::MoveLeft);
+        direction_set = m_game_model->setMoveDirection(Direction::MoveLeft);
         break;
     case Qt::Key_Right:
-        m_game_model->setMoveDirection(Direction::MoveRight);
+        direction_set = m_game_model->setMoveDirection(Direction::MoveRight);
         break;
     case Qt::Key_Up:
-        m_game_model->setMoveDirection(Direction::MoveUp);
+        direction_set = m_game_model->setMoveDirection(Direction::MoveUp);
         break;
     case Qt::Key_Down:
-        m_game_model->setMoveDirection(Direction::MoveDown);
+        direction_set = m_game_model->setMoveDirection(Direction::MoveDown);
         break;
     default:
+        updateUserMessage(UserMessages::KeyNotSupported);
         return false;
     }
+
+    if (direction_set == DirectionChangeResult::Succeeded)
+        updateUserMessage(UserMessages::None);
+    else if (direction_set == DirectionChangeResult::OppositeDirection)
+        updateUserMessage(UserMessages::WrongDirection);
+    else if (direction_set == DirectionChangeResult::TooManyPerMove)
+        updateUserMessage(UserMessages::TooManyKeysPerMove);
 
     return true;
 }
@@ -79,4 +87,19 @@ void GameViewModel::executeMove()
 {
     m_game_model->executeMove();
     emit gameUpdated();
+}
+
+void GameViewModel::updateUserMessage(UserMessages new_message)
+{
+    if (m_current_message == new_message)
+        return;
+
+    if (!m_game_model->isGameStarted())
+    {
+        if (new_message != UserMessages::None)
+            return;
+    }
+
+    m_current_message = new_message;
+    emit userMessageUpdated(m_current_message);
 }

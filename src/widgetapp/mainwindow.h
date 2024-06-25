@@ -28,10 +28,10 @@ protected:
 
 private slots:
     void startGame();
+    void visualizeUserMessage(UserMessages message);
 
 private:
     void createGame();
-    void visualizeUserMessage(UserMessages message);
 
     Ui::MainWindow *ui;
     QGraphicsView* m_graphics_view;

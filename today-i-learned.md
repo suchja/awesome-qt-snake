@@ -3,6 +3,22 @@ While working on this project I (re-) learned a lot about C++, Qt, TDD and more.
 
 Therefore I try to write one or the other learnings I during this project. In the future I would like to have a dedicated part of my blog, where i post these TIL. So without further ado here are my learnings!
 
+## Mark methods with `noexcept` to improve code (or not?)
+With C++11 the keyword `noexcept` was introduced. Its general idea is to clearly state the intend of a method to **not** throw any `Exception`. This does not only help the compiler to improve performance, but it also clearly communicates the intended behavior of a method.
+
+Although the keyword can be used in different contexts (e.g. as operator to check whether a method is `noexcept` or not), it is used like this to indicate that a method does not throw any `Exception`:
+
+```cpp
+void myFunction() noexcept;
+```
+
+It seems like the usefullness of this keyword is questioned. I haven't read enough so far, but before using it in all code, I should do so.
+
+### Resources
+- [IsoCpp](https://isocpp.org/wiki/faq/exceptions) provides a great FAQ on the topic *exception and error handling*.
+- [noexcept — what for?](https://akrzemi1.wordpress.com/2014/04/24/noexcept-what-for/) by Andrzej Krzemieński - provides critical question whether it is usefull and how it might benefit.
+
+
 ## Parameterized Tests with QTest
 Using parameterized tests is one of the *Test Patterns* described in the book *xUnit Test Patterns - Refactoring Test Code* by *Gerard Meszaros*. Its intention is to reduce *Test Code Duplication*.
 

@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     createGame();
 
     connect(m_view_model, SIGNAL(gameStarted()), this, SLOT(startGame()));
+    connect(m_view_model, SIGNAL(userMessageUpdated(UserMessages)), this, SLOT(visualizeUserMessage(UserMessages)));
 
     // connect game with UI
     m_graphics_view->installEventFilter(this);
@@ -26,8 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::startGame()
 {
     connect(&m_timer, SIGNAL(timeout()), m_view_model, SLOT(executeMove()));
-    m_timer.start(250);
-    visualizeUserMessage(m_view_model->getCurrentUserMessage());
+    m_timer.start(500);
 }
 
 MainWindow::~MainWindow()
@@ -37,7 +37,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::createGame()
 {
-    Game* model = new Game(20, 20, this);
+    Game* model = new Game(20, 20, 3, this);
     m_view_model = new GameViewModel(model, this);
 
     m_view = new GameBoardView(m_graphics_view);
@@ -66,6 +66,15 @@ void MainWindow::visualizeUserMessage(UserMessages message)
         break;
     case UserMessages::StartGame :
         ui->statusbar->showMessage("Press any arrow key to start game!");
+        break;
+    case UserMessages::KeyNotSupported :
+        ui->statusbar->showMessage("Key is not supported!");
+        break;
+    case UserMessages::WrongDirection :
+        ui->statusbar->showMessage("Opposite direction not allowed!");
+        break;
+    case UserMessages::TooManyKeysPerMove :
+        ui->statusbar->showMessage("Only one direction change per move is allowed!");
         break;
     default:
         break;

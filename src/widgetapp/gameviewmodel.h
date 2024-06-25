@@ -11,7 +11,8 @@ enum class UserMessages {
     None,
     StartGame,
     KeyNotSupported,
-    WrongDirection
+    WrongDirection,
+    TooManyKeysPerMove
 };
 
 class GameViewModel : public QObject

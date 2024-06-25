@@ -73,6 +73,9 @@ void MainWindow::visualizeUserMessage(UserMessages message)
     case UserMessages::WrongDirection :
         ui->statusbar->showMessage("Opposite direction not allowed!");
         break;
+    case UserMessages::TooManyKeysPerMove :
+        ui->statusbar->showMessage("Only one direction change per move is allowed!");
+        break;
     default:
         break;
     }

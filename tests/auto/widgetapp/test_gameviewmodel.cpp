@@ -29,6 +29,7 @@ private slots:
     void processKeyboardInput_shouldSignalUserMessageUpdated_whenOppositeDirectionIsPressed();
     void processKeyboardInput_shouldNotSignalUserMessageUpdated_whenUnsupportedKeyPressedBeforeGameStarted();
     void processKeyboardInput_shouldNotSignalUserMessageUpdated_whenMessageDoesNotChange();
+    void processKeyboardInput_shouldSignalUserMessageUpdated_whenTooManyKeysPressed();
 
     void getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove_data();
     void getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove();
@@ -176,7 +177,10 @@ void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whe
 
     GameViewModel sut(&game_dependency);
     sut.processKeyboardAction(Qt::Key_Up); // start game
+    sut.executeMove(); // allow next key press
     sut.processKeyboardAction(Qt::Key_Escape); // set to unsupported key
+    sut.executeMove(); // allow next key press
+
     QSignalSpy is_updated_signal(&sut, SIGNAL(userMessageUpdated(UserMessages)));
 
     // ACT
@@ -256,6 +260,24 @@ void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whe
     QCOMPARE(is_updated_signal.count(), 1);
     QList<QVariant> arguments = is_updated_signal.takeFirst();
     QCOMPARE((UserMessages)arguments.at(0).toInt(), UserMessages::WrongDirection);
+}
+
+void test_GameViewModel::processKeyboardInput_shouldSignalUserMessageUpdated_whenTooManyKeysPressed() {
+    // ARRANGE
+    Game game_dependency = Game(20, 20);
+
+    GameViewModel sut(&game_dependency);
+    sut.processKeyboardAction(Qt::Key_Up); // we need to start game first!
+
+    QSignalSpy is_updated_signal(&sut, SIGNAL(userMessageUpdated(UserMessages)));
+
+    // ACT
+    sut.processKeyboardAction(Qt::Key_Right);
+
+    // ASSERT
+    QCOMPARE(is_updated_signal.count(), 1);
+    QList<QVariant> arguments = is_updated_signal.takeFirst();
+    QCOMPARE((UserMessages)arguments.at(0).toInt(), UserMessages::TooManyKeysPerMove);
 }
 
 void test_GameViewModel::getSnakePostions_shouldBeChangedToNewPosition_whenCalledAfterKeyEventAndExecuteMove_data() {

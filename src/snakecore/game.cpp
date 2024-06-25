@@ -35,17 +35,14 @@ QPoint Game::getFoodPosition() const
     return m_food_generator->getFoodOnRandomEmptyPosition(occupied_positions);
 }
 
-bool Game::setMoveDirection(Direction new_direction)
+DirectionChangeResult Game::setMoveDirection(Direction new_direction)
 {
     if (!m_snake->isMoving() && (new_direction != Direction::NoMove))
     {
         emit isStarted();
     }
 
-    if (m_snake->setMoveDirection(new_direction) == DirectionChangeResult::OppositeDirection)
-        return false;
-
-    return true;
+    return m_snake->setMoveDirection(new_direction);
 }
 
 void Game::executeMove()

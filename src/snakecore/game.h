@@ -7,6 +7,7 @@
 class Snake;
 class FoodGenerator;
 enum class Direction;
+enum class DirectionChangeResult;
 
 class Game : public QObject
 {
@@ -22,7 +23,7 @@ public:
 
     QPoint getFoodPosition() const;
 
-    bool setMoveDirection(Direction new_direction);
+    DirectionChangeResult setMoveDirection(Direction new_direction);
     void executeMove();
     bool isGameStarted();
 

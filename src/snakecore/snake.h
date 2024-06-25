@@ -16,7 +16,8 @@ public:
     QList<QPoint> getBody() const;
     bool isMoving() const;
 
-    bool setMoveDirection(Direction new_direction);
+    DirectionChangeResult setMoveDirection(Direction new_direction);
+
     void executeMove();
 
 signals:

@@ -42,7 +42,10 @@ bool Game::setMoveDirection(Direction new_direction)
         emit isStarted();
     }
 
-    return m_snake->setMoveDirection(new_direction);
+    if (m_snake->setMoveDirection(new_direction) == DirectionChangeResult::OppositeDirection)
+        return false;
+
+    return true;
 }
 
 void Game::executeMove()

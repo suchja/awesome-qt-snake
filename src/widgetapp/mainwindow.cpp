@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::startGame()
 {
     connect(&m_timer, SIGNAL(timeout()), m_view_model, SLOT(executeMove()));
-    m_timer.start(250);
+    m_timer.start(500);
 }
 
 MainWindow::~MainWindow()

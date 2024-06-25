@@ -148,7 +148,6 @@ void test_Snake::shouldStayOnDirection_whenCalledWithSameDirectionAndExecutingMo
 
     // ASSERT
     QCOMPARE(actual, expected);
-
 }
 
 void test_Snake::getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder_data() {
@@ -185,28 +184,28 @@ void test_Snake::getBody_shouldReturnPositionOnOtherSide_whenExecuteMoveOnBorder
 void test_Snake::setMoveDirection_shouldReturnWhetherNewDirectionWasAccepted_data() {
     QTest::addColumn<Direction>("initial_direction");
     QTest::addColumn<Direction>("new_direction");
-    QTest::addColumn<bool>("expected");
+    QTest::addColumn<DirectionChangeResult>("expected");
 
-    QTest::newRow("down -> up") << Direction::MoveDown << Direction::MoveUp << false;
-    QTest::newRow("up -> down") << Direction::MoveUp << Direction::MoveDown << false;
-    QTest::newRow("left -> right") << Direction::MoveLeft << Direction::MoveRight << false;
-    QTest::newRow("right -> left") << Direction::MoveRight << Direction::MoveLeft << false;
-    QTest::newRow("up -> left") << Direction::MoveUp << Direction::MoveLeft << true;
-    QTest::newRow("down -> left") << Direction::MoveDown << Direction::MoveLeft << true;
-    QTest::newRow("down -> right") << Direction::MoveDown << Direction::MoveRight << true;
+    QTest::newRow("down -> up") << Direction::MoveDown << Direction::MoveUp << DirectionChangeResult::OppositeDirection;
+    QTest::newRow("up -> down") << Direction::MoveUp << Direction::MoveDown << DirectionChangeResult::OppositeDirection;
+    QTest::newRow("left -> right") << Direction::MoveLeft << Direction::MoveRight << DirectionChangeResult::OppositeDirection;
+    QTest::newRow("right -> left") << Direction::MoveRight << Direction::MoveLeft << DirectionChangeResult::OppositeDirection;
+    QTest::newRow("up -> left") << Direction::MoveUp << Direction::MoveLeft << DirectionChangeResult::Succeeded;
+    QTest::newRow("down -> left") << Direction::MoveDown << Direction::MoveLeft << DirectionChangeResult::Succeeded;
+    QTest::newRow("down -> right") << Direction::MoveDown << Direction::MoveRight << DirectionChangeResult::Succeeded;
 }
 
 void test_Snake::setMoveDirection_shouldReturnWhetherNewDirectionWasAccepted() {
     // ARRANGE
     QFETCH(Direction, initial_direction);
     QFETCH(Direction, new_direction);
-    QFETCH(bool, expected);
+    QFETCH(DirectionChangeResult, expected);
 
     Snake sut(20, 20);
 
     // ACT
     sut.setMoveDirection(initial_direction);
-    bool actual = sut.setMoveDirection(new_direction);
+    DirectionChangeResult actual = sut.setMoveDirection(new_direction);
 
     // ASSERT
     QCOMPARE(actual, expected);

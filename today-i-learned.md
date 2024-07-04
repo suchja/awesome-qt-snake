@@ -3,6 +3,92 @@ While working on this project I (re-) learned a lot about C++, Qt, TDD and more.
 
 Therefore I try to write one or the other learnings I during this project. In the future I would like to have a dedicated part of my blog, where i post these TIL. So without further ado here are my learnings!
 
+## Is a class without functionality still OOP?
+
+In an interview I had recently, I came across a tendency that data and functionality might be different concerns. From what I understood, the interviewer suggested that this is an valid approach even on class level. This idea gave me quite a hard time, because usually I see encapsulation as one of the corner stones of OOP (and [[Separation of Concerns (SOLID)]] as another).
+
+After recovering from the shock about this I did some research and came across [this stackoverflow post](https://stackoverflow.com/questions/11389948/object-oriented-programming-separation-of-data-and-behavior). It raises the problem with a good example:
+
+```csharp
+class Person
+{
+    string Name;
+    DateTime BirthDate;
+
+    //constructor
+    Person(string Name, DateTime BirthDate)
+    {
+        this.Name = Name;
+        this.BirthDate = BirthDate;
+    }
+}
+
+class PersonService
+{
+    Person personObject;
+
+    //constructor
+    PersonService(string Name, DateTime BirthDate)
+    {
+        this.personObject = new Person(Name, BirthDate);
+    }
+
+    //overloaded constructor
+    PersonService(Person personObject)
+    {
+        this.personObject = personObject;
+    }
+
+    int GetAge()
+    {
+        return personObject.Today - personObject.BirthDate; //for illustration only
+    }
+}
+```
+
+From my understanding of OOP this goes against:
+- Encapsulation - The `PersonService` requires data (internal state) from the `Person` to offer its services. So it violates encapsulation.
+- Coupling - The `PersonService` highly depends on the `Person`. So we have a high coupling here, which makes it difficult to use the one class without the other.
+- Cohesion - Thinking in objects as a way of [[Divide and Conquer]] appeals to me, because you have core aspects about one single "problem" in one class. However, if I look into the `Person` above, even its interface doesn't tell me anything about what problem it might solve. I always have to look into both classes to get the understanding about the solved problem. So this seems to me like the cohesion is either too high or not existing at all.
+
+### Did I kill myself ...
+**BUT** reading further through the answers, I came across [this](https://stackoverflow.com/a/14949756/5258906):
+
+> I agree, the separation as you implemented is cumbersome. But there are other options. What about an ageCalculator object that has method getAge(person p)? Or person.getAge(IAgeCalculator calc). Or better yet calc.getAge(IAgeble a)
+> 
+> There are several benefits that accrue from separating these concerns. Assuming that you intended for your implementation to return years, what if a person / baby is only 3 months old? Do you return 0? .25? Throw an exception? What if I want the age of a dog? Age in decades or hours? What if I want the age as of a certain date? What if the person is dead? What if I want to use Martian orbit for year? Or Hebrew calendar?
+
+Even though I would still say that the age is intrinsic to a person, I wouldn't implement functionality like calculating the age in different calendars into the class `Person` (low cohesion!). This is because I would argue that it is against separation of concerns. But wait, wasn't that the idea I'm fighting? So, did I kill myself?
+
+### ... or was it just a KISS?
+As ~~always~~ usual, we probably have to say: **it (heavily) depends**. First of all I would argue that it depends on the requirements. If there is **no** requirement to have the age in different calendar types, why do we bother in the first place? Although I long enough was fond of the idea to prepare my code for "anything" that might happen in the future, I lately came across [[Test Driven Development (TDD)]] as well as [[Extreme Programming]].
+
+Both argue that we really should only implement that, what is currently required. I guess this is one of the key aspects of [[Agile Development]] and properly fits [[Keep It Simple and Stupid (KISS)]] quite nicely. More than that it also supports my experience. The additional effort I put into thinking of (more or less likely) future changes and preparing my code for that, seldomly paid out. Usually the requirement in such situations was a little bit (most times largely) different than I had anticipated.
+
+Anyhow, what happens if there is the requirement to support different calendars? I probably still would have a `Person` with a `getAgeInHebrewCalender` (or something else) method. In addition, I would suggest to have some kind of converter between the required calendars. This way we have separation of concerns as well.
+
+However, I have to admit that it would be difficult for me to decide, which calendar is used to store the age in a `Person`. In addition such a converter class would offer functionality, but has no (long-term) data, or does it?
+
+Phew, still not clear on how to deal with this!
+
+### The one answer to rule them all
+
+> If you can't find an answer, simply quote an expert. - *Quote from either Konfuzius or myself ;-)!*
+
+[Another answer](https://stackoverflow.com/a/11390053/5258906) referred to the [Anemic Domain Model](https://martinfowler.com/bliki/AnemicDomainModel.html) from [[Martin Fowler]]:
+> The basic symptom of an Anemic Domain Model is that at first blush it looks like the real thing. There are objects, many named after the nouns in the domain space, and these objects are connected with the rich relationships and structure that true domain models have. The catch comes when you look at the behavior, and you realize that there is hardly any behavior on these objects, making them little more than bags of getters and setters.
+> [...]
+> 
+> The fundamental horror of this anti-pattern is that it's so contrary to the basic idea of object-oriented design; which is to combine data and process together. The anemic domain model is really just a procedural style design, exactly the kind of thing that object bigots like me (and Eric) have been fighting since our early days in Smalltalk. What's worse, many people think that anemic objects are real objects, and thus completely miss the point of what object-oriented design is all about.
+
+So, if mister OOP himself says its bad, than it probably is. Isn't it?
+
+My gut feeling is still that classes should (usually) consist of data and functionality. However, if the requirements ask for certain features and a team decides to use a more functional oriented architecture, go for separating data and behavior. To me there is no single right or wrong decision. It simply depends on the circumstances and the trade-offs. The latter is also nicely explained [here](https://monospacedmonologues.com/2016/01/why-couple-data-to-behaviour/).
+
+**But**, however you decide to go ahead, insisting that it is the only possible or maybe even the best solution seems to me pretty wrong!
+
+PS: Learning from my interview: I really should ask for clarification, if I'm unsure what is meant by a question. Even if this takes a little more time.
+
 ## Mark methods with `noexcept` to improve code (or not?)
 With C++11 the keyword `noexcept` was introduced. Its general idea is to clearly state the intend of a method to **not** throw any `Exception`. This does not only help the compiler to improve performance, but it also clearly communicates the intended behavior of a method.
 
